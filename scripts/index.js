@@ -11,6 +11,8 @@
  * http://www.html5gamedevs.com/forum/16-babylonjs/
  * 
  */
+//player
+var height = 7;
 
 //Constants for the lane in meters
 var laneWidth = 1.07;
@@ -70,6 +72,13 @@ function init() {
     //Add an action manager to change the ball's color.
     generateActionManager(scene);
 	
+	
+	/*camera.onCollide = function (colMesh) {
+		if (colMesh.uniqueId === floor.uniqueId) {
+			cameraJump(scene);
+		}
+	}*/
+	
 	window.addEventListener("keyup", function(e){
 		switch (event.keyCode) {
 			case 32:
@@ -100,7 +109,13 @@ function createScene(engine) {
         scene.render();
     });*/
     var loader = new BABYLON.AssetsManager(scene);
+	
+	//Set gravity for the scene (G force like, on Y-axis)
+    scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
 
+    // Enable Collisions
+    scene.collisionsEnabled = true;
+	
     createLocker(loader);
 	createTable(loader);
 	
@@ -119,16 +134,22 @@ function createScene(engine) {
 }
 
 function createFreeCamera(scene) {
-    var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 1.6, 0), scene);
+    var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 7, 0), scene);
 
     camera.speed = 0.8;
     camera.inertia = 0.4;
+	//Set the ellipsoid around the camera (e.g. your player's size)
+    camera.ellipsoid = new BABYLON.Vector3(3, 3.5, 3);
 	
 	camera.keysUp.push(87); // "w"
 	camera.keysRight.push(68);//d
 	camera.keysLeft.push(65);//a
 	camera.keysDown.push(83); // "s"
-
+	
+	//Then apply collisions and gravity to the active camera
+    camera.checkCollisions = true;
+    camera.applyGravity = true;
+	
     return camera;
 }
 
@@ -143,6 +164,8 @@ function createFloor(scene) {
     grassTexture.vScale = 8;
     grassMaterial.diffuseTexture = grassTexture;
     floor.material = grassMaterial;
+	//Collisions
+	floor.checkCollisions = true;
     return floor;
 }
 
@@ -252,10 +275,10 @@ function cameraJump(scene) {
 	
 	// Animation keys
 	var keys = [];
-	keys.push({ frame: 0, value: cam.position.y });
-	keys.push({ frame: 5, value: cam.position.y - 1 });
-	keys.push({ frame: 10, value: cam.position.y + 6 });
-	keys.push({ frame: 20, value: cam.position.y });
+	keys.push({ frame: 0, value: height });
+	keys.push({ frame: 5, value: height - 1 });
+	keys.push({ frame: 10, value: height + 6 });
+	keys.push({ frame: 20, value: height });
 	a.setKeys(keys);
 	
 	var easingFunction = new BABYLON.CircleEase();
