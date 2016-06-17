@@ -131,13 +131,13 @@ function createFreeCamera(scene) {
 
 function createFloor(scene,box_width,box_length_rate) {
     //Create a ground mesh
-    var floor = BABYLON.Mesh.CreateGround("floor", box_width, box_width*box_length_rate, 1, scene, false);
+    var floor = BABYLON.Mesh.CreateGround("floor", box_width*box_length_rate ,box_width, 1, scene, false);
     //Grass material
     var grassMaterial = new BABYLON.StandardMaterial(name, scene);
     //Texture used under https://creativecommons.org/licenses/by/2.0/ , from https://www.flickr.com/photos/pixelbuffer/3581676159 .
     var grassTexture = new BABYLON.Texture("Assets/TexturesCom_FloorsCheckerboard0048_9_S.jpg", scene);
-    grassTexture.uScale = 8;
-    grassTexture.vScale = 8;
+    grassTexture.uScale = 10;
+    grassTexture.vScale = 10;
     grassMaterial.diffuseTexture = grassTexture;
     floor.material = grassMaterial;
 	//Collisions
@@ -174,7 +174,7 @@ function createSkyBox(scene,box_width,box_length_rate) {
 	
 	skybox.scaling.z = box_length_rate;
 	//-1是為了把skybox的下面那一面往下降一點，讓ground在上面
-	console.log(width);
+	//console.log(box_width);
 	//skybox.position.y = width*(-0.5)-1;
 	skybox.position.y = -10;
 	
@@ -200,22 +200,26 @@ function createLocker(loader){
 	var locker_positionx,locker_positiony,locker_positionz;
 	var locker = new Array(16);
 	var locker_flag =0;
-	locker_positionz = -37;locker_positionx = -20;locker_positiony = 0;
+	locker_positionz = -34.2;locker_positionx = -30;locker_positiony = 0;
 	for(var locker_i = 0,locker_buffer = 0;locker_i < 1;locker_i++,locker_buffer += 8){
 		for(var locker_j = 0;locker_j < 12;locker_j++){
 				
 				locker[locker_j + locker_buffer] = loader.addMeshTask("locker", "", "Assets/OBJ/Locker/", "locker.obj");
 				locker[locker_j + locker_buffer].onSuccess = function (t) {
 					if(locker_flag%12 ==0 && locker_flag!=0){
-						locker_positionx = -35;
+						locker_positionx = -30;
 						locker_positiony += 2.5;
 					}
 					t.loadedMeshes.forEach(function (m) {
+						m.scaling.x = 2.2;
+						m.scaling.y = 2;
+						m.scaling.z = 2.7;						
 						m.position.x -= locker_positionx;
 						m.position.y += locker_positiony;
 						m.position.z += locker_positionz;
+						
 					});
-					locker_positionx +=2.6;
+					locker_positionx +=5.8;
 					
 					locker_flag++;
 			};
@@ -293,7 +297,7 @@ function createBlackBoard(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 			//obj.position.x -= 0;
-			obj.position.z = 41.5;
+			obj.position.z = 34.0;
 			obj.position.y = 4;
 			
 			obj.rotation.y = Math.PI/2;
@@ -312,13 +316,13 @@ function createLectern(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 			//obj.position.x -= 0;
-			obj.position.z = 30.5;
+			obj.position.z = 28.5;
 			//obj.position.y = 4;*/
 			
 			obj.rotation.y = Math.PI/2;
 			var scale = 0.18;
 			obj.scaling.x = scale;
-			obj.scaling.y = scale;
+			obj.scaling.y = scale*0.75;
 			obj.scaling.z = scale;
 		});
 	};
