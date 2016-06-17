@@ -12,7 +12,7 @@
  * 
  */
 //player
-var height = 7;
+var height = 6;
 
 function init() {
     //Init the engine
@@ -82,14 +82,11 @@ function createScene(engine) {
 	//Set gravity for the scene (G force like, on Y-axis)
     scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
 
-<<<<<<< HEAD
+
     // Enable Collisions
     scene.collisionsEnabled = true;
 	
     createLocker(loader);
-=======
-    
->>>>>>> origin/gh-pages
 	createTable(loader);
 	createChair(loader);
 	createBlackBoard(loader);
@@ -112,16 +109,13 @@ function createScene(engine) {
 }
 
 function createFreeCamera(scene) {
-<<<<<<< HEAD
-    var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 7, 0), scene);
-=======
+
     var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 6, 0), scene);
->>>>>>> origin/gh-pages
 
     camera.speed = 0.8;
     camera.inertia = 0.4;
 	//Set the ellipsoid around the camera (e.g. your player's size)
-    camera.ellipsoid = new BABYLON.Vector3(3, 3.5, 3);
+    camera.ellipsoid = new BABYLON.Vector3(3, 3, 3);
 	
 	camera.keysUp.push(87); // "w"
 	camera.keysRight.push(68);//d
