@@ -32,7 +32,7 @@ function init() {
 	var height = 6;
 	
 	var box_width = 70;
-	var box_length_rate = 1.2;
+	var box_length_rate = 0.77;
     //Create the floor
     var floor = createFloor(scene,box_width,box_length_rate);
     //Add a light.
@@ -84,16 +84,17 @@ function createScene(engine) {
 	//Set gravity for the scene (G force like, on Y-axis)
     scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
 
-
     // Enable Collisions
     scene.collisionsEnabled = true;
 	
+	createWall(scene);
     createLocker(loader);
 	createTable(loader);
 	createChair(loader);
 	createBlackBoard(loader);
 	createLectern(loader);
 	createLocker(loader);
+	createWindows(loader);
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
@@ -175,9 +176,6 @@ function createSkyBox(scene,box_width,box_length_rate) {
     skybox.material = skyboxMaterial;
 	
 	skybox.scaling.z = box_length_rate;
-	//-1是為了把skybox的下面那一面往下降一點，讓ground在上面
-	//console.log(box_width);
-	//skybox.position.y = width*(-0.5)-1;
 	skybox.position.y = -10;
 	
     //rotate it so front will be more interesting.
@@ -196,6 +194,42 @@ function generateActionManager(scene) {
             ball.material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
         }
     ));
+}
+
+function createWall(scene){
+	createBeam("rightFront",scene,26,34);
+	createBeam("leftFront",scene,-26,34);
+	createBeam("rightRear",scene,-26,-34);
+	createBeam("leftRear",scene,26,-34);
+	//createBeam("leftMiddle",scene,-26,0);
+	//createBeam("rightMiddle",scene,27.3,0);
+	
+	createHorizontalWall(scene,31.3,-1,12);
+	createHorizontalWall(scene,31.3,19.7,12);
+}
+
+function createBeam(name,scene,x,z){
+	var box = BABYLON.Mesh.CreateBox(name, 2, scene);
+	var wallTexture = new BABYLON.StandardMaterial("wall", scene);
+	wallTexture.diffuseTexture = new BABYLON.Texture("Assets/wall.jpg", scene);
+	box.material = wallTexture;
+	
+	box.position.x = x;
+	box.position.z = z;
+	box.scaling.y = 26;
+}
+
+function createHorizontalWall(scene,x,y,z){
+	var wall = BABYLON.Mesh.CreateBox("wall", 10, scene);
+	var wallTexture = new BABYLON.StandardMaterial("wall", scene);
+	wallTexture.diffuseTexture = new BABYLON.Texture("Assets/wall.jpg", scene);
+	wall.material = wallTexture;
+	
+	wall.position.x = x;
+	wall.position.y = y;
+	wall.position.z = z;
+	wall.scaling.y = 1.2;
+	wall.scaling.z = 9;
 }
 
 function createLocker(loader){
@@ -230,17 +264,17 @@ function createLocker(loader){
 }
 
 function createTable(loader){
-	var initX =-20;
+	var initX =-24.25;
 	var table_positionx = initX,table_positionz = -22;
-	var table = new Array(36);
+	var table = new Array(42);
 	var table_flag = 0;
 	
-	for(var table_i = 0,table_buffer = 0;table_i < 6;table_i++,table_buffer += 6){
+	for(var table_i = 0,table_buffer = 0;table_i < 7;table_i++,table_buffer += 7){
 		for(var table_j = 0;table_j < 6;table_j++){
 				
 				table[table_j + table_buffer] = loader.addMeshTask("table", "", "Assets/OBJ/schooltable/", "schooltable.obj");
 				table[table_j + table_buffer].onSuccess = function (t) {
-					if(table_flag%6 ==0 && table_flag!=0){
+					if(table_flag%7 ==0 && table_flag!=0){
 						table_positionx = initX;
 						table_positionz += 8;
 					}
@@ -258,17 +292,17 @@ function createTable(loader){
 }
 
 function createChair(loader){
-	var initX =-20;
+	var initX =-24.25;
 	var positionx = initX,positionz = -22;
-	var chair = new Array(36);
+	var chair = new Array(42);
 	var flag = 0;
 	
-	for(var table_i = 0,table_buffer = 0;table_i < 6;table_i++,table_buffer += 6){
+	for(var table_i = 0,table_buffer = 0;table_i < 7;table_i++,table_buffer += 7){
 		for(var table_j = 0;table_j < 6;table_j++){
 				
 				chair[table_j + table_buffer] = loader.addMeshTask("table", "", "Assets/OBJ/chair/", "chair.obj");
 				chair[table_j + table_buffer].onSuccess = function (t) {
-					if(flag%6 ==0 && flag!=0){
+					if(flag%7 ==0 && flag!=0){
 						positionx = initX;
 						positionz += 8;
 					}
@@ -313,18 +347,47 @@ function createBlackBoard(loader){
 
 function createLectern(loader){
 
-	var blackbord = loader.addMeshTask("blackboard", "", "Assets/OBJ/lectern/", "lectern.obj");
-	blackbord.onSuccess = function (t) {
+	var lectern = loader.addMeshTask("blackboard", "", "Assets/OBJ/lectern/", "lectern.obj");
+	lectern.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
 			//obj.position.x -= 0;
-			obj.position.z = 28.5;
+			obj.position.z = 25;
 			//obj.position.y = 4;*/
 			
 			obj.rotation.y = Math.PI/2;
 			var scale = 0.18;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale*0.75;
+			obj.scaling.z = scale;
+		});
+	};
+}
+
+function createWindows(loader){
+	neighborWindows(loader,26.6,5,9.8);
+	neighborWindows(loader,26.6,5,-13);
+}
+
+function neighborWindows(loader,x,y,z){
+	oneWindow(loader,x,y,z);
+	oneWindow(loader,x,y,z+7.6);
+}
+
+function oneWindow(loader,x,y,z){
+	var w = loader.addMeshTask("blackboard", "", "Assets/OBJ/window/", "window.obj");
+	w.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = x;
+			obj.position.y = y;
+			obj.position.z = z;
+			
+			obj.rotation.y = Math.PI/2;
+			
+			var scale = 0.1;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
 			obj.scaling.z = scale;
 		});
 	};
@@ -349,7 +412,7 @@ function cameraJump(scene, height) {
 	
 	cam.animations.push(a);		
 	scene.beginAnimation(cam, 0, 20, false);
-} 
+}
 
   // show axis
 function showAxis(scene,size) {
@@ -391,36 +454,36 @@ function showAxis(scene,size) {
 //可以讓使用滑鼠改變視角
 function  initPointerLock(scene,camera) {
 		
-			// Request pointer lock
-			var canvas = scene.getEngine().getRenderingCanvas();
-			// On click event, request pointer lock
-			canvas.addEventListener("click", function(evt) {
-				canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
-				if (canvas.requestPointerLock) {
-					canvas.requestPointerLock();
-				}
-			}, false);
-
-			// Event listener when the pointerlock is updated (or removed by pressing ESC for example).
-			var pointerlockchange = function (event) {
-				var controlEnabled = (
-								   document.mozPointerLockElement === canvas
-								|| document.webkitPointerLockElement === canvas
-								|| document.msPointerLockElement === canvas
-								|| document.pointerLockElement === canvas);
-				// If the user is alreday locked
-				if (! controlEnabled) {
-					//camera.detachControl(canvas);
-					console.log('The pointer lock status is now locked');
-				} else {
-					//camera.attachControl(canvas);
-					console.log('The pointer lock status is now unlocked'); 
-				}
-			};
-
-			// Attach events to the document
-			document.addEventListener("pointerlockchange", pointerlockchange, false);
-			document.addEventListener("mspointerlockchange", pointerlockchange, false);
-			document.addEventListener("mozpointerlockchange", pointerlockchange, false);
-			document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
+	// Request pointer lock
+	var canvas = scene.getEngine().getRenderingCanvas();
+	// On click event, request pointer lock
+	canvas.addEventListener("click", function(evt) {
+		canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
+		if (canvas.requestPointerLock) {
+			canvas.requestPointerLock();
 		}
+	}, false);
+
+	// Event listener when the pointerlock is updated (or removed by pressing ESC for example).
+	var pointerlockchange = function (event) {
+		var controlEnabled = (
+						   document.mozPointerLockElement === canvas
+						|| document.webkitPointerLockElement === canvas
+						|| document.msPointerLockElement === canvas
+						|| document.pointerLockElement === canvas);
+		// If the user is alreday locked
+		if (! controlEnabled) {
+			//camera.detachControl(canvas);
+			console.log('The pointer lock status is now locked');
+		} else {
+			//camera.attachControl(canvas);
+			console.log('The pointer lock status is now unlocked'); 
+		}
+	};
+
+	// Attach events to the document
+	document.addEventListener("pointerlockchange", pointerlockchange, false);
+	document.addEventListener("mspointerlockchange", pointerlockchange, false);
+	document.addEventListener("mozpointerlockchange", pointerlockchange, false);
+	document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
+}
