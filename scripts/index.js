@@ -11,16 +11,16 @@
  * http://www.html5gamedevs.com/forum/16-babylonjs/
  * 
  */
-//player
-var height = 6;
-
 function init() {
     //Init the engine
     var engine = initEngine();
     //Create a new scene
     var scene = createScene(engine);
-    //Create the main player camera
-    var camera = createFreeCamera(scene);
+	
+	//player
+	var height = 6;
+	//Create the main player camera
+    var camera = createFreeCamera(scene,height);
     //Attach the control from the canvas' user input
     camera.attachControl(engine.getRenderingCanvas());
     //set the camera to be the main active camera;
@@ -28,6 +28,8 @@ function init() {
 	
 	//讓滑鼠可以直接滑動控制視角
 	initPointerLock(scene,camera);
+	//player
+	var height = 6;
 	
 	var box_width = 70;
 	var box_length_rate = 1.2;
@@ -41,7 +43,7 @@ function init() {
     //Add an action manager to change the ball's color.
     generateActionManager(scene);
 	
-	
+	//可能用的到暫放
 	/*camera.onCollide = function (colMesh) {
 		if (colMesh.uniqueId === floor.uniqueId) {
 			cameraJump(scene);
@@ -51,7 +53,7 @@ function init() {
 	window.addEventListener("keyup", function(e){
 		switch (event.keyCode) {
 			case 32:
-				cameraJump(scene);
+				cameraJump(scene, height);
 			break;
 		}	
 	}, false);
@@ -108,9 +110,9 @@ function createScene(engine) {
     return scene;
 }
 
-function createFreeCamera(scene) {
+function createFreeCamera(scene,height) {
 
-    var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 6, 0), scene);
+    var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, height, 0), scene);
 
     camera.speed = 0.8;
     camera.inertia = 0.4;
@@ -328,7 +330,7 @@ function createLectern(loader){
 	};
 }
         	
-function cameraJump(scene) {
+function cameraJump(scene, height) {
 	var cam = scene.cameras[0];
 	cam.animations = [];		
 	var a = new BABYLON.Animation("a", "position.y", 20, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
