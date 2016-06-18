@@ -236,9 +236,9 @@ function createLocker(loader){
 	var locker_positionx,locker_positiony,locker_positionz;
 	var locker = new Array(16);
 	var locker_flag =0;
-	locker_positionz = -34.2;locker_positionx = -30;locker_positiony = 0;
+	locker_positionz = -33.9;locker_positionx = -20;locker_positiony = 0;
 	for(var locker_i = 0,locker_buffer = 0;locker_i < 1;locker_i++,locker_buffer += 8){
-		for(var locker_j = 0;locker_j < 12;locker_j++){
+		for(var locker_j = 0;locker_j < 8;locker_j++){
 				
 				locker[locker_j + locker_buffer] = loader.addMeshTask("locker", "", "Assets/OBJ/Locker/", "locker.obj");
 				locker[locker_j + locker_buffer].onSuccess = function (t) {
@@ -352,7 +352,7 @@ function createLectern(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 			//obj.position.x -= 0;
-			obj.position.z = 25;
+			obj.position.z = 27;
 			//obj.position.y = 4;*/
 			
 			obj.rotation.y = Math.PI/2;
