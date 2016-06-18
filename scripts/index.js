@@ -118,7 +118,7 @@ function createFreeCamera(scene,height) {
     camera.speed = 0.8;
     camera.inertia = 0.4;
 	//Set the ellipsoid around the camera (e.g. your player's size)
-    camera.ellipsoid = new BABYLON.Vector3(3, 3, 3);
+    camera.ellipsoid = new BABYLON.Vector3(0.5, 3, 0.5);
 	
 	camera.keysUp.push(87); // "w"
 	camera.keysRight.push(68);//d
@@ -253,7 +253,7 @@ function createLocker(loader){
 						m.position.x -= locker_positionx;
 						m.position.y += locker_positiony;
 						m.position.z += locker_positionz;
-						
+						m.checkCollisions = true; //加入碰撞，不可穿越
 					});
 					locker_positionx +=5.8;
 					
@@ -281,6 +281,7 @@ function createTable(loader){
 					t.loadedMeshes.forEach(function (m) {
 						m.position.x -= table_positionx;
 						m.position.z += table_positionz;
+						m.checkCollisions = true; //加入碰撞，不可穿越
 					});
 					table_positionx +=8;
 					
@@ -316,6 +317,7 @@ function createChair(loader){
 						obj.scaling.x = scale*0.95;
 						obj.scaling.y = scale;
 						obj.scaling.z = scale;
+						obj.checkCollisions = true; //加入碰撞，不可穿越
 					});
 					positionx +=8;
 					
@@ -341,6 +343,7 @@ function createBlackBoard(loader){
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
@@ -360,6 +363,7 @@ function createLectern(loader){
 			obj.scaling.x = scale;
 			obj.scaling.y = scale*0.75;
 			obj.scaling.z = scale;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
