@@ -88,6 +88,8 @@ function createScene(engine) {
     scene.collisionsEnabled = true;
 	
 	createWall(scene);
+	
+	createDoors(loader);
     createLocker(loader);
 	createTable(loader);
 	createChair(loader);
@@ -127,7 +129,7 @@ function createFreeCamera(scene,height) {
 	
 	//Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
-    camera.applyGravity = true;
+    //camera.applyGravity = true;
 	
     return camera;
 }
@@ -147,6 +149,8 @@ function createFloor(scene,box_width,box_length_rate) {
 	floor.checkCollisions = true;
     return floor;
 }
+
+
 
 function createLight(scene) {
     //Create a directional light
@@ -203,9 +207,47 @@ function createWall(scene){
 	createBeam("leftRear",scene,26,-34);
 	//createBeam("leftMiddle",scene,-26,0);
 	//createBeam("rightMiddle",scene,27.3,0);
+	var z = -0.6;
+	//right
+	//scene , size , x , y , z , scaleY,scaleZ
+	createHorizontalWall(scene,10,31.3,26.2,12,1.2,9);//橫向上
+	createHorizontalWall(scene,10,31.3,14.35,12,0.134,9);//橫向中
+	createHorizontalWall(scene,10,31.3,-1,12,1.2,9);//橫向下
 	
-	createHorizontalWall(scene,31.3,-1,12);
-	createHorizontalWall(scene,31.3,19.7,12);
+	createHorizontalWall(scene,7,29.8,17.6,29.3,0.75,1.3);//垂直最左上
+	createHorizontalWall(scene,7,29.8,17.6,-29.3,0.75,1.3);//垂直最右上
+	
+	createHorizontalWall(scene,7,29.8,9.34,29.3,1.24,1.3);//垂直最左下
+	createHorizontalWall(scene,7,29.8,9.34,-29.3,1.24,1.3);//垂直最右下
+	
+	createHorizontalWall(scene,7,29.8,17.6,9.2+z,0.75,0.3);//垂直第二左上
+	createHorizontalWall(scene,7,29.8,17.6,-8+z,0.75,0.3);//垂直第二右上
+	
+	createHorizontalWall(scene,7,29.8,9.36,9.2+z,1.25,0.3);//垂直第二左下
+	createHorizontalWall(scene,7,29.8,9.36,-8+z,1.25,0.3);//垂直第二右下
+
+	//left (*-1)
+	//scene , size , x , y , z , scaleY,scaleZ
+	createHorizontalWall(scene,10,-31.3,26.2,12,1.2,9);//橫向上
+	createHorizontalWall(scene,10,-31.3,14.35,12,0.128,9);//橫向中
+	createHorizontalWall(scene,10,-31.3,2.5,0,0.5,4.96);//橫向下
+	
+	createHorizontalWall(scene,7,-29.8,17.6,29.3,0.75,1.3);//垂直最左上
+	createHorizontalWall(scene,7,-29.8,17.6,-29.3,0.75,1.3);//垂直最右上
+	
+	createHorizontalWall(scene,7,-29.8,9.36,9.2+z,1.25,0.3);//垂直左下
+	createHorizontalWall(scene,7,-29.8,9.36,-8+z,1.25,0.3);//垂直右下
+	
+	createHorizontalWall(scene,7,-29.8,17.6,9.2+z,0.75,0.3);//垂直左上
+	createHorizontalWall(scene,7,-29.8,17.6,-8+z,0.75,0.3);//垂直右上
+	
+	createHorizontalWall(scene,6,-29.3,0,25.5,4.8,0.44);//前門左垂直
+	createHorizontalWall(scene,6,-29.3,0,32.1,4.8,0.3);//前門右垂直
+	createHorizontalWall(scene,6,-29.3,12.65,29,0.4,0.74);//前門上方橫向
+	
+	createHorizontalWall(scene,6,-29.3,0,-32.5,4.8,0.44);//後門左垂直
+	createHorizontalWall(scene,6,-29.3,0,-25.8,4.8,0.35);//後門右垂直
+	createHorizontalWall(scene,6,-29.3,12.65,-29,0.4,0.74);//後門上方橫向
 }
 
 function createBeam(name,scene,x,z){
@@ -219,8 +261,8 @@ function createBeam(name,scene,x,z){
 	box.scaling.y = 26;
 }
 
-function createHorizontalWall(scene,x,y,z){
-	var wall = BABYLON.Mesh.CreateBox("wall", 10, scene);
+function createHorizontalWall(scene,size,x,y,z,scaleY,scaleZ){
+	var wall = BABYLON.Mesh.CreateBox("wall", size, scene);
 	var wallTexture = new BABYLON.StandardMaterial("wall", scene);
 	wallTexture.diffuseTexture = new BABYLON.Texture("Assets/wall.jpg", scene);
 	wall.material = wallTexture;
@@ -228,9 +270,35 @@ function createHorizontalWall(scene,x,y,z){
 	wall.position.x = x;
 	wall.position.y = y;
 	wall.position.z = z;
-	wall.scaling.y = 1.2;
-	wall.scaling.z = 9;
+	wall.scaling.y = scaleY;
+	wall.scaling.z = scaleZ;
 }
+
+function createDoors(loader){
+	//前門
+	oneDoor("frontDoor",loader,29);
+	//後門
+	oneDoor("backDoor",loader,-29);
+}
+
+function oneDoor(name,loader,z){
+
+	var door = loader.addMeshTask(name, "", "Assets/OBJ/door/", "door.obj");
+	door.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {		
+			obj.position.x = -26.7;
+			obj.position.z = z;
+			
+			obj.rotation.y = Math.PI/2;
+			var scale = 0.14;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+		});
+	};
+}
+
 
 function createLocker(loader){
 	var locker_positionx,locker_positiony,locker_positionz;
@@ -369,16 +437,30 @@ function createLectern(loader){
 }
 
 function createWindows(loader){
-	neighborWindows(loader,26.6,5,9.8);
-	neighborWindows(loader,26.6,5,-13);
+	//var z = -1.2;
+	var z = -0.6;
+	
+	neighborWindows(loader,26.6,5,14+z);
+	neighborWindows(loader,26.6,5,-3.2+z);
+	neighborWindows(loader,26.6,5,-20.4+z);
+	
+	neighborWindows(loader,-26.6,5,14+z);
+	neighborWindows(loader,-26.6,5,-3.2+z);
+	neighborWindows(loader,-26.6,5,-20.4+z);
 }
 
 function neighborWindows(loader,x,y,z){
-	oneWindow(loader,x,y,z);
-	oneWindow(loader,x,y,z+7.6);
+	
+	//transom window
+	oneWindow(loader,x,y+10,z,0.6);
+	oneWindow(loader,x,y,z,1);
+	
+	//transom window
+	oneWindow(loader,x,y+10,z+7.6,0.6);
+	oneWindow(loader,x,y,z+7.6,1);
 }
 
-function oneWindow(loader,x,y,z){
+function oneWindow(loader,x,y,z,minRate){
 	var w = loader.addMeshTask("blackboard", "", "Assets/OBJ/window/", "window.obj");
 	w.onSuccess = function (t) {
 	
@@ -391,7 +473,7 @@ function oneWindow(loader,x,y,z){
 			
 			var scale = 0.1;
 			obj.scaling.x = scale;
-			obj.scaling.y = scale;
+			obj.scaling.y = scale*minRate;
 			obj.scaling.z = scale;
 		});
 	};
