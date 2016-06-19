@@ -18,7 +18,7 @@ function init() {
     var scene = createScene(engine);
 	
 	//player
-	var height = 6;
+	var height = 10;
 	//Create the main player camera
     var camera = createFreeCamera(scene,height);
     //Attach the control from the canvas' user input
@@ -28,8 +28,6 @@ function init() {
 	
 	//讓滑鼠可以直接滑動控制視角
 	initPointerLock(scene,camera);
-	//player
-	var height = 6;
 	
 	var box_width = 70;
 	var box_length_rate = 0.77;
@@ -52,8 +50,21 @@ function init() {
 	
 	window.addEventListener("keyup", function(e){
 		switch (event.keyCode) {
+			case 16:
+				if(camera.position.y < height)
+					cameraStand(scene, height);
+			break;
 			case 32:
 				cameraJump(scene, height);
+			break;
+		}
+	}, false);
+	
+	window.addEventListener("keydown", function(e){
+		switch (event.keyCode) {
+			case 16:
+				if(camera.position.y >= height)
+					cameraSquat(scene, height);
 			break;
 		}	
 	}, false);
@@ -120,7 +131,7 @@ function createFreeCamera(scene,height) {
     camera.speed = 0.8;
     camera.inertia = 0.4;
 	//Set the ellipsoid around the camera (e.g. your player's size)
-    camera.ellipsoid = new BABYLON.Vector3(0.5, 3, 0.5);
+    camera.ellipsoid = new BABYLON.Vector3(0.5, height/2, 0.5);
 	
 	camera.keysUp.push(87); // "w"
 	camera.keysRight.push(68);//d
@@ -129,7 +140,7 @@ function createFreeCamera(scene,height) {
 	
 	//Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
-    //camera.applyGravity = true;
+    camera.applyGravity = true;
 	
     return camera;
 }
@@ -479,9 +490,9 @@ function oneWindow(loader,x,y,z,minRate){
 	};
 }
         	
-function cameraJump(scene, height) {
-	var cam = scene.cameras[0];
-	cam.animations = [];		
+function cameraJump(scene, height){
+	var camera = scene.cameras[0];
+	camera.animations = [];		
 	var a = new BABYLON.Animation("a", "position.y", 20, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 	
 	// Animation keys
@@ -495,11 +506,48 @@ function cameraJump(scene, height) {
 	var easingFunction = new BABYLON.CircleEase();
 	easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
 	a.setEasingFunction(easingFunction);
-	
-	cam.animations.push(a);		
-	scene.beginAnimation(cam, 0, 20, false);
+	camera.animations.push(a);		
+	scene.beginAnimation(camera, 0, 20, false);
 }
 
+function cameraSquat(scene, height){
+	var camera = scene.cameras[0];
+	camera.animations = [];		
+	var a = new BABYLON.Animation("a", "position.y", 20, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+	
+	// Animation keys
+	var keys = [];
+	keys.push({ frame: 0, value: camera.position.y });
+	keys.push({ frame: 5, value: camera.position.y - 5 });
+	a.setKeys(keys);
+	var easingFunction = new BABYLON.CircleEase();
+	easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+	a.setEasingFunction(easingFunction);
+	
+	camera.ellipsoid = new BABYLON.Vector3(0.5, (height-5)/2, 0.5);
+	camera.animations.push(a);
+	scene.beginAnimation(camera, 0, 5, false);
+}
+
+function cameraStand(scene, height){
+	var camera = scene.cameras[0];
+	camera.animations = [];		
+	var a = new BABYLON.Animation("a", "position.y", 20, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+	
+	// Animation keys
+	var keys = [];
+	keys.push({ frame: 0, value: camera.position.y });
+	keys.push({ frame: 5, value: camera.position.y + 5 });
+	a.setKeys(keys);
+	
+	var easingFunction = new BABYLON.CircleEase();
+	easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+	a.setEasingFunction(easingFunction);
+	
+	camera.ellipsoid = new BABYLON.Vector3(0.5, height/2, 0.5);
+	camera.animations.push(a);		
+	scene.beginAnimation(camera, 0, 5, false);
+}
   // show axis
 function showAxis(scene,size) {
     var makeTextPlane = function(text, color, size) {
