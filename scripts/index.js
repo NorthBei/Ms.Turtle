@@ -108,6 +108,11 @@ function createScene(engine) {
 	createLectern(loader);
 	createLocker(loader);
 	createWindows(loader);
+	//obj不能用
+	//createProjector(loader);
+	createSpeaker(loader);
+	createClock(loader);
+	createComputer(loader);
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
@@ -145,6 +150,7 @@ function createFreeCamera(scene,height) {
     return camera;
 }
 
+/**********裝潢區**********/
 function createFloor(scene,box_width,box_length_rate) {
     //Create a ground mesh
     var floor = BABYLON.Mesh.CreateGround("floor", box_width*box_length_rate ,box_width, 1, scene, false);
@@ -160,8 +166,6 @@ function createFloor(scene,box_width,box_length_rate) {
 	floor.checkCollisions = true;
     return floor;
 }
-
-
 
 function createLight(scene) {
     //Create a directional light
@@ -447,6 +451,25 @@ function createLectern(loader){
 	};
 }
 
+function oneWindow(loader,x,y,z,minRate){
+	var w = loader.addMeshTask("window", "", "Assets/OBJ/window/", "window.obj");
+	w.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = x;
+			obj.position.y = y;
+			obj.position.z = z;
+			
+			obj.rotation.y = Math.PI/2;
+			
+			var scale = 0.1;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale*minRate;
+			obj.scaling.z = scale;
+		});
+	};
+}
+
 function createWindows(loader){
 	//var z = -1.2;
 	var z = -0.6;
@@ -471,25 +494,142 @@ function neighborWindows(loader,x,y,z){
 	oneWindow(loader,x,y,z+7.6,1);
 }
 
-function oneWindow(loader,x,y,z,minRate){
-	var w = loader.addMeshTask("blackboard", "", "Assets/OBJ/window/", "window.obj");
-	w.onSuccess = function (t) {
+//obj不能用
+/*function createProjector(loader){
+
+	var projector = loader.addMeshTask("projector", "", "Assets/OBJ/projector/", "projector.obj");
+	projector.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
+			//obj.position.x -= 0;
+			obj.position.z = 0;
+			obj.position.y = 20;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.22;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}*/
+
+function oneSpeaker(loader,x,y,z){
+
+	var Speaker = loader.addMeshTask("Speaker", "", "Assets/OBJ/speaker/", "Speaker.obj");
+	Speaker.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
 			obj.position.x = x;
 			obj.position.y = y;
 			obj.position.z = z;
 			
-			obj.rotation.y = Math.PI/2;
-			
-			var scale = 0.1;
+			obj.rotation.y = Math.PI;
+			var scale = 3;
 			obj.scaling.x = scale;
-			obj.scaling.y = scale*minRate;
+			obj.scaling.y = scale;
 			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
-        	
+ 
+function createSpeaker(loader){
+	
+	oneSpeaker(loader,20,20,36);
+	oneSpeaker(loader,-20,20,36);
+} 
+ 
+function createClock(loader){
+	var Clock = loader.addMeshTask("Clock", "", "Assets/OBJ/clock/", "Clock_obj.obj");
+	Clock.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = 22.5;
+			obj.position.y = 15;
+			obj.position.z = 35;
+			
+			obj.rotation.y = Math.PI/2;
+			var scale = 3;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createComputer(loader){
+	
+	createKeyboard(loader,0,5.6,28);
+	createImac(loader,-0.5,5.8,26);
+	createMouse(loader,-1.8,5.4,28);
+}
+
+function createKeyboard(loader,x,y,z){
+	var Keyboard = loader.addMeshTask("Keyboard", "", "Assets/OBJ/computer/clavier_imac/", "clavier_imac.obj");
+	Keyboard.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = x;
+			obj.position.y = y;
+			obj.position.z = z;
+			
+			obj.rotation.y = Math.PI/8;
+			var scale = 5;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createImac(loader,x,y,z){
+	var Imac = loader.addMeshTask("Imac", "", "Assets/OBJ/computer/imac/", "imac.obj");
+	Imac.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = x;
+			obj.position.y = y;
+			obj.position.z = z;
+			
+			obj.rotation.y = Math.PI/8;
+			var scale = 5;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createMouse(loader,x,y,z){
+	var Mouse = loader.addMeshTask("Mouse", "", "Assets/OBJ/computer/mouse_imac/", "mouse_imac.obj");
+	Mouse.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = x;
+			obj.position.y = y;
+			obj.position.z = z;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 5;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+/**********功能區**********/ 
 function cameraJump(scene, height){
 	var camera = scene.cameras[0];
 	camera.animations = [];		
