@@ -115,22 +115,24 @@ function createScene(engine) {
 	createLectern(loader);
 	createLocker(loader);
 	createWindows(loader);
+	//createProjector(loader);
 	createSpeaker(loader);
 	createClock(loader);
 	createComputer(loader);
+	//createMicrophone(loader);
 	createCellphone(loader, scene);
 	createMotherboard(loader);
 	createMotherboardWithIC(loader);
+	//createPlug(loader);
+	//createCharger(loader);
 	createBook(loader);
-	createPlayBoy(loader, scene);
 	createBattery(loader);
 	createRemote(loader, scene);
 	createRemoteWithBattery(loader, scene)
 	createIC(loader);
 	createHammer(loader);
-	createFireExtinguisher(loader);
-	createRubbish(loader);
-	createRat(loader);
+
+	//showAxis(scene,2);
 	
     loader.onFinish = function () {
         engine.runRenderLoop(function () {
@@ -151,7 +153,7 @@ function createFreeCamera(scene,height) {
 
     var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, height, 0), scene);
 
-    camera.speed = 0.5;
+    camera.speed = 0.8;
     camera.inertia = 0.4;
 	//Set the ellipsoid around the camera (e.g. your player's size)
     camera.ellipsoid = new BABYLON.Vector3(0.5, height/2, 0.5);
@@ -174,40 +176,18 @@ function createSceneSound(scene) {
 }
 
 function createWalkSound(scene) {
-	var WalkSound = new BABYLON.Sound("WalkSound", "Assets/sounds/walking_on_a_floor.mp3", scene, function () {
-			var i = 0;
+	var WalkSound = new BABYLON.Sound("WalkSound", "Assets/sounds/WalkSound.wav", scene, function () {
+			
 			window.addEventListener("keydown", function(e){
 				switch (event.keyCode) {
 					case 87:
-						if(!WalkSound.isPlaying)
-							WalkSound.play();
-					break;
-					case 68:
-						if(!WalkSound.isPlaying)
-							WalkSound.play();
-					break;
-					case 65:
-						if(!WalkSound.isPlaying)
-							WalkSound.play();
-					break;
-					case 83:
-						if(!WalkSound.isPlaying)
-							WalkSound.play();
+						WalkSound.play();
 					break;
 				}	
 			}, false);
 			window.addEventListener("keyup", function(e){
 				switch (event.keyCode) {
 					case 87:
-						WalkSound.stop();
-					break;
-					case 68:
-						WalkSound.stop();
-					break;
-					case 65:
-						WalkSound.stop();
-					break;
-					case 83:
 						WalkSound.stop();
 					break;
 				}
@@ -291,15 +271,16 @@ function createLight(scene) {
 						}	
 				light[light_buffer + light_j] = new BABYLON.PointLight("dir"+light_buffer + light_j, new BABYLON.Vector3(0, -10, 0), scene);
 				light[light_buffer + light_j].position = new BABYLON.Vector3(light_positionx, light_positiony, light_positionz);
-				light[light_buffer + light_j].intensity = 0.2;
-				light[light_buffer + light_j].diffuse = new BABYLON.Color3(0.9, 0.7, 0.7);
-				light[light_buffer + light_j].specular = new BABYLON.Color3(0.3, 0.3, 0.3);
+				light[light_buffer + light_j].intensity = 0.3;
+				light[light_buffer + light_j].specular = new BABYLON.Color3(0.4, 0.4, 0.4);
 				light_positionz += 25;
 				light_flag++;
 				}
 	}
 
     //create a second one to simulate light on dark sides
+    var secondLight = new BABYLON.DirectionalLight("dir02", new BABYLON.Vector3(-0.5, -1, -0.5), scene);
+    secondLight.intensity = 0.35;
 
     return light;
 }
@@ -553,7 +534,6 @@ function createTable(loader){
 					t.loadedMeshes.forEach(function (m) {
 						m.position.x -= table_positionx;
 						m.position.z += table_positionz;
-						m.scaling.y = 1.5;
 						m.checkCollisions = true; //加入碰撞，不可穿越
 					});
 					table_positionx +=8;
@@ -588,7 +568,7 @@ function createChair(loader){
 						
 						var scale = 0.11;
 						obj.scaling.x = scale*0.95;
-						obj.scaling.y = scale*1.2;
+						obj.scaling.y = scale;
 						obj.scaling.z = scale;
 						obj.checkCollisions = true; //加入碰撞，不可穿越
 					});
@@ -687,6 +667,27 @@ function neighborWindows(loader,x,y,z){
 	oneWindow(loader,x,y+10,z+7.6,0.6);
 	oneWindow(loader,x,y,z+7.6,1);
 }
+
+//obj不能用
+/*function createProjector(loader){
+
+	var projector = loader.addMeshTask("projector", "", "Assets/OBJ/projector/", "projector.obj");
+	projector.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			//obj.position.x -= 0;
+			obj.position.z = 0;
+			obj.position.y = 20;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.22;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}*/
 
 function oneSpeaker(loader,x,y,z){
 
@@ -808,6 +809,28 @@ function createMouse(loader,x,y,z){
 	};
 }
 
+//obj不能用
+function createMicrophone(loader){
+	var Microphone = loader.addMeshTask("Microphone", "", "Assets/OBJ/microphone/", "wireless_vocal_microphone.obj");
+	Microphone.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = 0;
+			obj.position.y = 15;
+			obj.position.z = 0;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 1;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+			obj.name = 'Microphone';
+		});
+	};
+}
+
 function createCellphone(loader){
 	var Cellphone = loader.addMeshTask("Cellphone", "", "Assets/OBJ/cellphone/", "3d-model.obj");
 	//var materialCellphone = new BABYLON.StandardMaterial("materialCellphone", scene);
@@ -816,11 +839,11 @@ function createCellphone(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 			//obj.material = materialCellphone;
-			obj.position.x = -9;
-			obj.position.y = 4;
-			obj.position.z = 13;
+			obj.position.x = 0;
+			obj.position.y = 12;
+			obj.position.z = 10;
 			
-			obj.rotation.x = Math.PI/2;
+			//obj.rotation.y = Math.PI/2;
 			var scale = 0.2;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
@@ -837,11 +860,11 @@ function createMotherboard(loader){
 	Motherboard.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 23.3;
-			obj.position.y = 0.5;
-			obj.position.z = -33.5;
+			obj.position.x = 0;
+			obj.position.y = 12;
+			obj.position.z = 5;
 			
-			obj.rotation.z = -Math.PI/4;
+			//obj.rotation.y = Math.PI/2;
 			var scale = 0.005;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
@@ -874,15 +897,37 @@ function createMotherboardWithIC(loader){
 	};
 }
 
-function createBook(loader){
-	var Book = loader.addMeshTask("Book", "", "Assets/OBJ/Book/", "book.obj");
+//obj不能用
+function createPlug(loader){
+	var Plug = loader.addMeshTask("Plug", "", "Assets/OBJ/plug/", "British Double Socket.obj");
 	
-	Book.onSuccess = function (t) {
+	Plug.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 24;
-			obj.position.y = 4;
-			obj.position.z = 22;
+			obj.position.x = 0;
+			obj.position.y = 15;
+			obj.position.z = 0;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.005;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+			obj.name = 'Plug';
+		});
+	};
+}
+//obj不能用
+function createCharger(loader){
+	var createCharger = loader.addMeshTask("createCharger", "", "Assets/OBJ/charger/", "Charger.obj");
+	
+	createCharger.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 0;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.5;
@@ -890,30 +935,28 @@ function createBook(loader){
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
 			//obj.checkCollisions = true; //加入碰撞，不可穿越
-			obj.name = 'Books';
+			obj.name = 'Charger';
 		});
 	};
 }
 
-function createPlayBoy(loader, scene){
-	var PlayBoy = loader.addMeshTask("PlayBoy", "", "Assets/OBJ/playboy/", "book.obj");
-	var materialPlayBoy = new BABYLON.StandardMaterial("materialPlayBoy", scene);
-	materialPlayBoy.diffuseTexture = new BABYLON.Texture("Assets/OBJ/playboy/playboy.png", scene);
-	PlayBoy.onSuccess = function (t) {
+function createBook(loader){
+	var Book = loader.addMeshTask("Book", "", "Assets/OBJ/Book/", "Book.obj");
+	
+	Book.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.material = materialPlayBoy;
-			obj.position.x = -0.2;
-			obj.position.y = 3;
-			obj.position.z = 27.2;
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 5;
 			
 			//obj.rotation.y = Math.PI/2;
-			var scale = 0.7;
+			var scale = 0.30;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
 			//obj.checkCollisions = true; //加入碰撞，不可穿越
-			obj.name = 'PlayBoy';
+			obj.name = 'Books';
 		});
 	};
 }
@@ -925,11 +968,9 @@ function createHammer(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 
-			obj.position.x = 15;
-			obj.position.y = 4;
-			obj.position.z = 33.8;
-			
-			obj.rotation.z = Math.PI/2;
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 0;
 			obj.scaling.x = 2;
 			obj.scaling.y = 2;
 			obj.scaling.z = 2;
@@ -945,9 +986,9 @@ function createBattery(loader){
 	Battery.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = -26.5;
-			obj.position.y = 5.15;
-			obj.position.z = 24;
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 10;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.15;
@@ -966,9 +1007,9 @@ function createRemote(loader){
 	Remote.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = -10;
-			obj.position.y = 4;
-			obj.position.z = -10;
+			obj.position.x = -5;
+			obj.position.y = 10;
+			obj.position.z = 15;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.1;
@@ -1008,11 +1049,10 @@ function createIC(loader){
 	var IC = loader.addMeshTask("IC", "", "Assets/OBJ/IC/", "C64_CHIP.obj");
 	
 	IC.onSuccess = function (t) {
-	
 		t.loadedMeshes.forEach(function (obj) {
 			obj.position.x = 2;
-			obj.position.y = 9;
-			obj.position.z = -33.5;
+			obj.position.y = 10;
+			obj.position.z = 10;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.005;
@@ -1021,70 +1061,6 @@ function createIC(loader){
 			obj.scaling.z = scale;
 			//obj.checkCollisions = true; //加入碰撞，不可穿越
 			obj.name = 'IC';
-		});
-	};
-}
-
-function createFireExtinguisher(loader){
-	var FireExtinguisher = loader.addMeshTask("FireExtinguisher", "", "Assets/OBJ/FireExtinguisher/", "fire extinguisher.obj");
-	
-	FireExtinguisher.onSuccess = function (t) {
-	
-		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = -24;
-			obj.position.y = 0;
-			obj.position.z = 34;
-			
-			//obj.rotation.y = Math.PI/2;
-			var scale = 10;
-			obj.scaling.x = scale;
-			obj.scaling.y = scale;
-			obj.scaling.z = scale;
-			//obj.checkCollisions = true; //加入碰撞，不可穿越
-			obj.name = 'ireExtinguisher';
-		});
-	};
-}
-
-function createRubbish(loader){
-	var Rubbish = loader.addMeshTask("Rubbish", "", "Assets/OBJ/Rubbish_Bin_By_Berken/", "Rubbish_Bin_By_Berken obj.obj");
-	
-	Rubbish.onSuccess = function (t) {
-	
-		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 23.7;
-			obj.position.y = 0;
-			obj.position.z = -32.5;
-			
-			//obj.rotation.y = Math.PI/2;
-			var scale = 0.015;
-			obj.scaling.x = scale;
-			obj.scaling.y = scale;
-			obj.scaling.z = scale;
-			//obj.checkCollisions = true; //加入碰撞，不可穿越
-			obj.name = 'Rubbish';
-		});
-	};
-}
-
-function createRat(loader){
-
-	var Rat = loader.addMeshTask("Rat", "", "Assets/OBJ/Rat/", "RE O zombi Rat.obj");
-	Rat.onSuccess = function (t) {
-	
-		t.loadedMeshes.forEach(function (obj) {
-
-			obj.position.x = 0;
-			obj.position.y = 0;
-			obj.position.z = 0;
-			
-			//obj.rotation.z = Math.PI/2;
-			var scale = 0.5;
-			obj.scaling.x = scale;
-			obj.scaling.y = scale;
-			obj.scaling.z = scale;
-			obj.checkCollisions = true; //加入碰撞，不可穿越
-			obj.name = 'Rat';
 		});
 	};
 }
@@ -1148,7 +1124,43 @@ function cameraStand(scene, height){
 	camera.animations.push(a);		
 	scene.beginAnimation(camera, 0, 5, false);
 }
- 
+  // show axis
+/*function showAxis(scene,size) {
+    var makeTextPlane = function(text, color, size) {
+    var dynamicTexture = new BABYLON.DynamicTexture("DynamicTexture", 50, scene, true);
+    dynamicTexture.hasAlpha = true;
+    dynamicTexture.drawText(text, 5, 40, "bold 36px Arial", color , "transparent", true);
+    var plane = new BABYLON.Mesh.CreatePlane("TextPlane", size, scene, true);
+    plane.material = new BABYLON.StandardMaterial("TextPlaneMaterial", scene);
+    plane.material.backFaceCulling = false;
+    plane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+    plane.material.diffuseTexture = dynamicTexture;
+    return plane;
+     };
+  
+    var axisX = BABYLON.Mesh.CreateLines("axisX", [ 
+      new BABYLON.Vector3.Zero(), new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(size * 0.95, 0.05 * size, 0), 
+      new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(size * 0.95, -0.05 * size, 0)
+      ], scene);
+    axisX.color = new BABYLON.Color3(1, 0, 0);
+    var xChar = makeTextPlane("X", "red", size / 10);
+    xChar.position = new BABYLON.Vector3(0.9 * size, -0.05 * size, 0);
+    var axisY = BABYLON.Mesh.CreateLines("axisY", [
+        new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3( -0.05 * size, size * 0.95, 0), 
+        new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3( 0.05 * size, size * 0.95, 0)
+        ], scene);
+    axisY.color = new BABYLON.Color3(0, 1, 0);
+    var yChar = makeTextPlane("Y", "green", size / 10);
+    yChar.position = new BABYLON.Vector3(0, 0.9 * size, -0.05 * size);
+    var axisZ = BABYLON.Mesh.CreateLines("axisZ", [
+        new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3( 0 , -0.05 * size, size * 0.95),
+        new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3( 0, 0.05 * size, size * 0.95)
+        ], scene);
+    axisZ.color = new BABYLON.Color3(0, 0, 1);
+    var zChar = makeTextPlane("Z", "blue", size / 10);
+    zChar.position = new BABYLON.Vector3(0, 0.05 * size, 0.9 * size);
+};
+*/
 //可以讓使用滑鼠改變視角
 function  initPointerLock(scene,camera) {
 		
@@ -1185,3 +1197,4 @@ function  initPointerLock(scene,camera) {
 	document.addEventListener("mozpointerlockchange", pointerlockchange, false);
 	document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
 }
+
