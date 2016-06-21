@@ -11,6 +11,8 @@
  * http://www.html5gamedevs.com/forum/16-babylonjs/
  * 
  */
+ var timer = 300; //遊戲倒數時間
+ 
 function init() {
     //Init the engine
     var engine = initEngine();
@@ -140,6 +142,7 @@ function createScene(engine) {
         engine.runRenderLoop(function () {
             scene.render();
         });
+		startCountingDown();
     };
 
     loader.load();
@@ -187,6 +190,10 @@ function createWalkSound(scene) {
 
 function addTextDescription(text) {
 	document.getElementById("stuffName").innerHTML = text;
+}
+
+function startCountingDown() {
+	setInterval(function() {document.getElementById('timer').innerHTML = 'Time: ' + timer--; if (timer < 0) document.body.innerHTML="<img src='Assets/explodeBear.jpg' style='position: absolute; top: 50px; left: 50%; margin: 0 0 0 -325px;'/><div style='font-size:13em; position: absolute; top: 400px; left: 50%; margin: 0 0 0 -325px;'>LOSER</div>"}, 1000);
 }
 
 /**********裝潢區**********/
