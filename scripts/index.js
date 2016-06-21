@@ -11,6 +11,8 @@
  * http://www.html5gamedevs.com/forum/16-babylonjs/
  * 
  */
+ var timer = 300; //遊戲倒數時間
+ 
 function init() {
     //Init the engine
     var engine = initEngine();
@@ -29,6 +31,7 @@ function init() {
 	//讓滑鼠可以直接滑動控制視角
 	initPointerLock(scene,camera);
 	
+	var skybox_width = 400;
 	var box_width = 70;
 	var box_length_rate = 0.77;
     //Create the floor
@@ -36,7 +39,7 @@ function init() {
     //Add a light.
     var light = createLight(scene);
     //Create the skybox
-    createSkyBox(scene,box_width,box_length_rate);
+    createSkyBox(scene,skybox_width,box_length_rate);
     
     //Add an action manager to change the ball's color.
     generateActionManager(scene);
@@ -124,12 +127,15 @@ function createScene(engine) {
 	createBattery(loader);
 	createRemote(loader, scene);
 	createIC(loader);
+	createHammer(loader);
+
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
         engine.runRenderLoop(function () {
             scene.render();
         });
+		startCountingDown();
     };
 
     loader.load();
@@ -156,7 +162,7 @@ function createFreeCamera(scene,height) {
 	
 	//Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
-    //camera.applyGravity = true;
+    camera.applyGravity = true;
 	
     return camera;
 }
@@ -188,6 +194,10 @@ function createWalkSound(scene) {
 
 function addTextDescription(text) {
 	document.getElementById("stuffName").innerHTML = text;
+}
+
+function startCountingDown() {
+	setInterval(function() {document.getElementById('timer').innerHTML = 'Time: ' + timer--; if (timer < 0) document.body.innerHTML="<img src='Assets/explodeBear.jpg' style='position: absolute; top: 50px; left: 50%; margin: 0 0 0 -325px;'/><div style='font-size:13em; position: absolute; top: 400px; left: 50%; margin: 0 0 0 -325px;'>LOSER</div>"}, 1000);
 }
 
 /**********裝潢區**********/
@@ -278,6 +288,10 @@ function createWall(scene){
 	//createBeam("leftMiddle",scene,-26,0);
 	//createBeam("rightMiddle",scene,27.3,0);
 	var z = -0.6;
+	createHorizontalWall_front(scene,30,0,13,35.5,3,0.005);
+	createHorizontalWall_front(scene,30,0,13,-35.5,2.5,0.05);
+	createceiling(scene,50,0,26.8,0,0.7,0.05);
+	
 	//right
 	//scene , size , x , y , z , scaleY,scaleZ
 	createHorizontalWall(scene,10,31.3,26.2,12,1.2,9);//橫向上
@@ -329,8 +343,34 @@ function createBeam(name,scene,x,z){
 	box.position.x = x;
 	box.position.z = z;
 	box.scaling.y = 26;
+	box.checkCollisions = true; //加入碰撞，不可穿越
 }
-
+function createceiling(scene,size,x,y,z,scaleX,scaleY){
+	var wall = BABYLON.Mesh.CreateBox("wall", size, scene);
+	var wallTexture = new BABYLON.StandardMaterial("wall", scene);
+	wallTexture.diffuseTexture = new BABYLON.Texture("Assets/wall.jpg", scene);
+	wall.material = wallTexture;
+	
+	wall.position.x = x;
+	wall.position.y = y;
+	wall.position.z = z;
+	wall.scaling.y = scaleY;
+	wall.scaling.x = scaleX;
+	wall.checkCollisions = true; //加入碰撞，不可穿越
+}
+function createHorizontalWall_front(scene,size,x,y,z,scaleX,scaleZ){
+	var wall = BABYLON.Mesh.CreateBox("wall", size, scene);
+	var wallTexture = new BABYLON.StandardMaterial("wall", scene);
+	wallTexture.diffuseTexture = new BABYLON.Texture("Assets/wall.jpg", scene);
+	wall.material = wallTexture;
+	
+	wall.position.x = x;
+	wall.position.y = y;
+	wall.position.z = z;
+	wall.scaling.x = scaleX;
+	wall.scaling.z = scaleZ;
+	wall.checkCollisions = true; //加入碰撞，不可穿越
+}
 function createHorizontalWall(scene,size,x,y,z,scaleY,scaleZ){
 	var wall = BABYLON.Mesh.CreateBox("wall", size, scene);
 	var wallTexture = new BABYLON.StandardMaterial("wall", scene);
@@ -342,6 +382,7 @@ function createHorizontalWall(scene,size,x,y,z,scaleY,scaleZ){
 	wall.position.z = z;
 	wall.scaling.y = scaleY;
 	wall.scaling.z = scaleZ;
+	wall.checkCollisions = true; //加入碰撞，不可穿越
 }
 
 function createDoors(loader){
@@ -373,6 +414,7 @@ function createTube_light(loader){
 				obj.position.y += Tube_light_positiony;
 				obj.rotation.x = Math.PI;
 				obj.rotation.y = Math.PI/2;
+				obj.checkCollisions = true; //加入碰撞，不可穿越
 			});
 			Tube_light_positionz += 25;
 			Tube_light_flag++;
@@ -395,6 +437,7 @@ function oneDoor(name,loader,z){
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
@@ -551,6 +594,7 @@ function oneWindow(loader,x,y,z,minRate){
 			obj.scaling.x = scale;
 			obj.scaling.y = scale*minRate;
 			obj.scaling.z = scale;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
@@ -837,6 +881,24 @@ function createBook(loader){
 	};
 }
 
+function createHammer(loader){
+
+	var Hammer = loader.addMeshTask("hammer", "", "Assets/OBJ/hammer/", "hammer.obj");
+	Hammer.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 0;
+			obj.scaling.x = 2;
+			obj.scaling.y = 2;
+			obj.scaling.z = 2;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
 function createBattery(loader){
 	var Battery = loader.addMeshTask("Battery", "", "Assets/OBJ/battery/", "Battery.obj");
 	
@@ -856,7 +918,7 @@ function createBattery(loader){
 		});
 	};
 }
-//obj不能用
+
 function createRemote(loader){
 	var Remote = loader.addMeshTask("Remote", "", "Assets/OBJ/Remote/", "smalls sky remote control.obj");
 	
