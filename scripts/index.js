@@ -66,18 +66,6 @@ function init() {
 				if(camera.position.y >= height)
 					cameraSquat(scene, height);
 			break;
-			case 87:
-				createWalkSound(scene);
-			break;
-			case 68:
-				createWalkSound(scene);
-			break;
-			case 65:
-				createWalkSound(scene);
-			break;
-			case 83:
-				createWalkSound(scene);
-			break;
 		}	
 	}, false);
 }
@@ -110,7 +98,8 @@ function createScene(engine) {
     // Enable Collisions
     scene.collisionsEnabled = true;
 	
-	//createSceneSound(scene);
+	createSceneSound(scene);
+	createWalkSound(scene);
 	
 	createWall(scene);
 	createTube_light(loader);
@@ -122,7 +111,6 @@ function createScene(engine) {
 	createLectern(loader);
 	createLocker(loader);
 	createWindows(loader);
-	//obj不能用
 	//createProjector(loader);
 	createSpeaker(loader);
 	createClock(loader);
@@ -133,7 +121,9 @@ function createScene(engine) {
 	//createPlug(loader);
 	//createCharger(loader);
 	createBook(loader);
-	//createBattery(loader);
+	createBattery(loader);
+	createRemote(loader, scene);
+	createIC(loader);
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
@@ -178,10 +168,21 @@ function createSceneSound(scene) {
 
 function createWalkSound(scene) {
 	var WalkSound = new BABYLON.Sound("WalkSound", "Assets/sounds/WalkSound.wav", scene, function () {
-			// Play immediatly
-			window.setTimeout(function () {
-				//WalkSound.play();
-			}, 1000);
+			
+			window.addEventListener("keydown", function(e){
+				switch (event.keyCode) {
+					case 87:
+						WalkSound.play();
+					break;
+				}	
+			}, false);
+			window.addEventListener("keyup", function(e){
+				switch (event.keyCode) {
+					case 87:
+						WalkSound.stop();
+					break;
+				}
+			}, false);
 		});
 }
 
@@ -349,6 +350,7 @@ function createDoors(loader){
 	//後門
 	oneDoor("backDoor",loader,-29);
 }
+
 function createTube_light(loader){
 	var Tube_light_positionx,Tube_light_positiony,Tube_light_positionz;
 	var Tube_light = new Array(6);
@@ -378,6 +380,7 @@ function createTube_light(loader){
 		}
 	}
 }
+
 function oneDoor(name,loader,z){
 
 	var door = loader.addMeshTask(name, "", "Assets/OBJ/door/", "door.obj");
@@ -732,20 +735,20 @@ function createMicrophone(loader){
 	};
 }
 
-function createCellphone(loader, scene){
-	var Cellphone = loader.addMeshTask("Cellphone", "", "Assets/OBJ/cellphone/", "iphone5_OBJ.obj");
-	var materialCellphone = new BABYLON.StandardMaterial("materialCellphone", scene);
-	materialCellphone.diffuseTexture = new BABYLON.Texture("Assets/OBJ/cellphone/screen.jpg", scene);
+function createCellphone(loader){
+	var Cellphone = loader.addMeshTask("Cellphone", "", "Assets/OBJ/cellphone/", "3d-model.obj");
+	//var materialCellphone = new BABYLON.StandardMaterial("materialCellphone", scene);
+	//materialCellphone.diffuseTexture = new BABYLON.Texture("Assets/OBJ/cellphone/screen.jpg", scene);
 	Cellphone.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.material = materialCellphone;
+			//obj.material = materialCellphone;
 			obj.position.x = 0;
-			obj.position.y = 15;
+			obj.position.y = 12;
 			obj.position.z = 10;
 			
 			//obj.rotation.y = Math.PI/2;
-			var scale = 0.005;
+			var scale = 0.2;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
@@ -761,7 +764,7 @@ function createMotherboard(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 			obj.position.x = 0;
-			obj.position.y = 15;
+			obj.position.y = 12;
 			obj.position.z = 5;
 			
 			//obj.rotation.y = Math.PI/2;
@@ -833,9 +836,9 @@ function createBook(loader){
 		});
 	};
 }
-//obj不能用
+
 function createBattery(loader){
-	var Battery = loader.addMeshTask("Battery", "", "Assets/OBJ/battery/", "Duracell_AA.obj");
+	var Battery = loader.addMeshTask("Battery", "", "Assets/OBJ/battery/", "Battery.obj");
 	
 	Battery.onSuccess = function (t) {
 	
@@ -845,7 +848,47 @@ function createBattery(loader){
 			obj.position.z = 10;
 			
 			//obj.rotation.y = Math.PI/2;
-			var scale = 1;
+			var scale = 0.15;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+//obj不能用
+function createRemote(loader){
+	var Remote = loader.addMeshTask("Remote", "", "Assets/OBJ/Remote/", "smalls sky remote control.obj");
+	
+	Remote.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = -5;
+			obj.position.y = 10;
+			obj.position.z = 15;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.1;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createIC(loader){
+	var IC = loader.addMeshTask("IC", "", "Assets/OBJ/IC/", "C64_CHIP.obj");
+	
+	IC.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 2;
+			obj.position.y = 10;
+			obj.position.z = 10;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.005;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
