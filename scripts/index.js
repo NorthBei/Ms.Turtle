@@ -114,21 +114,18 @@ function createScene(engine) {
 	createLectern(loader);
 	createLocker(loader);
 	createWindows(loader);
-	//createProjector(loader);
 	createSpeaker(loader);
 	createClock(loader);
 	createComputer(loader);
-	//createMicrophone(loader);
 	createCellphone(loader, scene);
 	createMotherboard(loader);
-	//createPlug(loader);
-	//createCharger(loader);
 	createBook(loader);
 	createBattery(loader);
 	createRemote(loader, scene);
 	createIC(loader);
 	createHammer(loader);
-
+	createFireExtinguisher(loader);
+	createRubbish(loader);
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
@@ -645,27 +642,6 @@ function neighborWindows(loader,x,y,z){
 	oneWindow(loader,x,y,z+7.6,1);
 }
 
-//obj不能用
-/*function createProjector(loader){
-
-	var projector = loader.addMeshTask("projector", "", "Assets/OBJ/projector/", "projector.obj");
-	projector.onSuccess = function (t) {
-	
-		t.loadedMeshes.forEach(function (obj) {
-			//obj.position.x -= 0;
-			obj.position.z = 0;
-			obj.position.y = 20;
-			
-			//obj.rotation.y = Math.PI/2;
-			var scale = 0.22;
-			obj.scaling.x = scale;
-			obj.scaling.y = scale;
-			obj.scaling.z = scale;
-			//obj.checkCollisions = true; //加入碰撞，不可穿越
-		});
-	};
-}*/
-
 function oneSpeaker(loader,x,y,z){
 
 	var Speaker = loader.addMeshTask("Speaker", "", "Assets/OBJ/speaker/", "Speaker.obj");
@@ -780,27 +756,6 @@ function createMouse(loader,x,y,z){
 	};
 }
 
-//obj不能用
-function createMicrophone(loader){
-	var Microphone = loader.addMeshTask("Microphone", "", "Assets/OBJ/microphone/", "wireless_vocal_microphone.obj");
-	Microphone.onSuccess = function (t) {
-	
-		t.loadedMeshes.forEach(function (obj) {
-
-			obj.position.x = 0;
-			obj.position.y = 15;
-			obj.position.z = 0;
-			
-			//obj.rotation.y = Math.PI/2;
-			var scale = 1;
-			obj.scaling.x = scale;
-			obj.scaling.y = scale;
-			obj.scaling.z = scale;
-			//obj.checkCollisions = true; //加入碰撞，不可穿越
-		});
-	};
-}
-
 function createCellphone(loader){
 	var Cellphone = loader.addMeshTask("Cellphone", "", "Assets/OBJ/cellphone/", "3d-model.obj");
 	//var materialCellphone = new BABYLON.StandardMaterial("materialCellphone", scene);
@@ -809,11 +764,11 @@ function createCellphone(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 			//obj.material = materialCellphone;
-			obj.position.x = 0;
-			obj.position.y = 12;
-			obj.position.z = 10;
+			obj.position.x = -9;
+			obj.position.y = 4;
+			obj.position.z = 13;
 			
-			//obj.rotation.y = Math.PI/2;
+			obj.rotation.x = Math.PI/2;
 			var scale = 0.2;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
@@ -829,52 +784,12 @@ function createMotherboard(loader){
 	Motherboard.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 0;
-			obj.position.y = 12;
-			obj.position.z = 5;
+			obj.position.x = 23.3;
+			obj.position.y = 0.5;
+			obj.position.z = -33.5;
 			
-			//obj.rotation.y = Math.PI/2;
+			obj.rotation.z = -Math.PI/4;
 			var scale = 0.005;
-			obj.scaling.x = scale;
-			obj.scaling.y = scale;
-			obj.scaling.z = scale;
-			//obj.checkCollisions = true; //加入碰撞，不可穿越
-		});
-	};
-}
-//obj不能用
-function createPlug(loader){
-	var Plug = loader.addMeshTask("Plug", "", "Assets/OBJ/plug/", "British Double Socket.obj");
-	
-	Plug.onSuccess = function (t) {
-	
-		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 0;
-			obj.position.y = 15;
-			obj.position.z = 0;
-			
-			//obj.rotation.y = Math.PI/2;
-			var scale = 0.005;
-			obj.scaling.x = scale;
-			obj.scaling.y = scale;
-			obj.scaling.z = scale;
-			//obj.checkCollisions = true; //加入碰撞，不可穿越
-		});
-	};
-}
-//obj不能用
-function createCharger(loader){
-	var createCharger = loader.addMeshTask("createCharger", "", "Assets/OBJ/charger/", "Charger.obj");
-	
-	createCharger.onSuccess = function (t) {
-	
-		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 0;
-			obj.position.y = 10;
-			obj.position.z = 0;
-			
-			//obj.rotation.y = Math.PI/2;
-			var scale = 0.5;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
@@ -889,9 +804,9 @@ function createBook(loader){
 	Book.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 0;
-			obj.position.y = 10;
-			obj.position.z = 5;
+			obj.position.x = 24;
+			obj.position.y = 2;
+			obj.position.z = 18;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.01;
@@ -911,8 +826,10 @@ function createHammer(loader){
 		t.loadedMeshes.forEach(function (obj) {
 
 			obj.position.x = 15;
-			obj.position.y = 10;
-			obj.position.z = 15;
+			obj.position.y = 4;
+			obj.position.z = 33.8;
+			
+			obj.rotation.z = Math.PI/2;
 			obj.scaling.x = 2;
 			obj.scaling.y = 2;
 			obj.scaling.z = 2;
@@ -927,9 +844,9 @@ function createBattery(loader){
 	Battery.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = 0;
-			obj.position.y = 10;
-			obj.position.z = 10;
+			obj.position.x = -26.5;
+			obj.position.y = 5.15;
+			obj.position.z = 24;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.15;
@@ -947,9 +864,9 @@ function createRemote(loader){
 	Remote.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-			obj.position.x = -5;
-			obj.position.y = 10;
-			obj.position.z = 15;
+			obj.position.x = -10;
+			obj.position.y = 4;
+			obj.position.z = -10;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.1;
@@ -968,11 +885,51 @@ function createIC(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 			obj.position.x = 2;
-			obj.position.y = 10;
-			obj.position.z = 10;
+			obj.position.y = 9;
+			obj.position.z = -33.5;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.005;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createFireExtinguisher(loader){
+	var FireExtinguisher = loader.addMeshTask("FireExtinguisher", "", "Assets/OBJ/FireExtinguisher/", "fire extinguisher.obj");
+	
+	FireExtinguisher.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = -24;
+			obj.position.y = 0;
+			obj.position.z = 34;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 10;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createRubbish(loader){
+	var Rubbish = loader.addMeshTask("Rubbish", "", "Assets/OBJ/Rubbish_Bin_By_Berken/", "Rubbish_Bin_By_Berken obj.obj");
+	
+	Rubbish.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 23.7;
+			obj.position.y = 0;
+			obj.position.z = -32.5;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.015;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
