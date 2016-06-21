@@ -118,13 +118,13 @@ function createScene(engine) {
 	createSpeaker(loader);
 	createClock(loader);
 	createComputer(loader);
-	createCellphone(loader, scene);
+	createCellphone(loader);
 	createMotherboard(loader);
 	createMotherboardWithIC(loader);
 	createBook(loader);
 	createPlayBoy(loader, scene);
 	createBattery(loader);
-	createRemote(loader, scene);
+	createRemote(loader);
 	createRemoteWithBattery(loader, scene)
 	createIC(loader);
 	createHammer(loader);
@@ -1071,21 +1071,26 @@ function createRubbish(loader){
 function createRat(loader){
 
 	var Rat = loader.addMeshTask("Rat", "", "Assets/OBJ/Rat/", "RE O zombi Rat.obj");
+	
 	Rat.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-
+			
 			obj.position.x = 0;
 			obj.position.y = 0;
 			obj.position.z = 0;
 			
 			//obj.rotation.z = Math.PI/2;
-			var scale = 0.5;
+			var scale = 1;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
+<<<<<<< HEAD
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+=======
 			obj.checkCollisions = true; //加入碰撞，不可穿越
 			obj.name = 'Rat';
+>>>>>>> origin/gh-pages
 		});
 	};
 }
