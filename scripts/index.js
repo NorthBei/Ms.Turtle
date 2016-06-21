@@ -66,6 +66,18 @@ function init() {
 				if(camera.position.y >= height)
 					cameraSquat(scene, height);
 			break;
+			case 87:
+				createWalkSound(scene);
+			break;
+			case 68:
+				createWalkSound(scene);
+			break;
+			case 65:
+				createWalkSound(scene);
+			break;
+			case 83:
+				createWalkSound(scene);
+			break;
 		}	
 	}, false);
 }
@@ -98,6 +110,8 @@ function createScene(engine) {
     // Enable Collisions
     scene.collisionsEnabled = true;
 	
+	//createSceneSound(scene);
+	
 	createWall(scene);
 	createTube_light(loader);
 	createDoors(loader);
@@ -114,7 +128,12 @@ function createScene(engine) {
 	createClock(loader);
 	createComputer(loader);
 	//createMicrophone(loader);
-	createCellphone(loader);
+	createCellphone(loader, scene);
+	createMotherboard(loader);
+	//createPlug(loader);
+	//createCharger(loader);
+	createBook(loader);
+	//createBattery(loader);
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
@@ -150,6 +169,20 @@ function createFreeCamera(scene,height) {
     //camera.applyGravity = true;
 	
     return camera;
+}
+
+function createSceneSound(scene) {
+	var SceneSound = new BABYLON.Sound("SceneSound", "Assets/sounds/Scraping_The_Sewer.mp3", scene, function () {
+		}, { loop: true, autoplay: true });
+}
+
+function createWalkSound(scene) {
+	var WalkSound = new BABYLON.Sound("WalkSound", "Assets/sounds/WalkSound.wav", scene, function () {
+			// Play immediatly
+			window.setTimeout(function () {
+				//WalkSound.play();
+			}, 1000);
+		});
 }
 
 function addTextDescription(text) {
@@ -680,7 +713,7 @@ function createMouse(loader,x,y,z){
 
 //obj不能用
 function createMicrophone(loader){
-	var Microphone = loader.addMeshTask("Microphone", "", "Assets/OBJ/microphone/", "Shure.obj");
+	var Microphone = loader.addMeshTask("Microphone", "", "Assets/OBJ/microphone/", "wireless_vocal_microphone.obj");
 	Microphone.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
@@ -699,18 +732,120 @@ function createMicrophone(loader){
 	};
 }
 
-function createCellphone(loader){
+function createCellphone(loader, scene){
 	var Cellphone = loader.addMeshTask("Cellphone", "", "Assets/OBJ/cellphone/", "iphone5_OBJ.obj");
+	var materialCellphone = new BABYLON.StandardMaterial("materialCellphone", scene);
+	materialCellphone.diffuseTexture = new BABYLON.Texture("Assets/OBJ/cellphone/screen.jpg", scene);
 	Cellphone.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
-
+			obj.material = materialCellphone;
 			obj.position.x = 0;
 			obj.position.y = 15;
 			obj.position.z = 10;
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 0.005;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createMotherboard(loader){
+	var Motherboard = loader.addMeshTask("Motherboard", "", "Assets/OBJ/Motherboard/", "Motherboard.obj");
+	
+	Motherboard.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 0;
+			obj.position.y = 15;
+			obj.position.z = 5;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.005;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+//obj不能用
+function createPlug(loader){
+	var Plug = loader.addMeshTask("Plug", "", "Assets/OBJ/plug/", "British Double Socket.obj");
+	
+	Plug.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 0;
+			obj.position.y = 15;
+			obj.position.z = 0;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.005;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+//obj不能用
+function createCharger(loader){
+	var createCharger = loader.addMeshTask("createCharger", "", "Assets/OBJ/charger/", "Charger.obj");
+	
+	createCharger.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 0;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.5;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createBook(loader){
+	var Book = loader.addMeshTask("Book", "", "Assets/OBJ/Book/", "Book.obj");
+	
+	Book.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 5;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.01;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+//obj不能用
+function createBattery(loader){
+	var Battery = loader.addMeshTask("Battery", "", "Assets/OBJ/battery/", "Duracell_AA.obj");
+	
+	Battery.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.position.x = 0;
+			obj.position.y = 10;
+			obj.position.z = 10;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 1;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
