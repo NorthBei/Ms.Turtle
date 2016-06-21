@@ -1,7 +1,7 @@
 # Max2Obj Version 4.0 Mar 10th, 2001
 #
 mtllib ./Motherboard.mtl
-g
+mg
 # object mainboard to come ...
 #
 v  -125.120773 0.000000 94.202896
@@ -48415,7 +48415,7 @@ vn  0.000000 0.000000 -1.000000
 vn  0.000000 0.000000 -1.000000
 # 16135 vertex normals
 
-g mainboard
+mg mainboard
 usemtl 01_-_Standard
 s 0
 f 6/6/6 5/5/5 3/3/3
@@ -74319,4 +74319,4 @@ f 12403/12403/12403 12406/12406/12406 12410/12410/12410
 f 12410/12410/12410 12407/12407/12407 12403/12403/12403
 # 23376 faces
 
-g
+mg
