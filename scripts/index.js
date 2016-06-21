@@ -99,7 +99,7 @@ function createScene(engine) {
     scene.collisionsEnabled = true;
 	
 	createWall(scene);
-	
+	createTube_light(loader);
 	createDoors(loader);
     createLocker(loader);
 	createTable(loader);
@@ -147,7 +147,7 @@ function createFreeCamera(scene,height) {
 	
 	//Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
-    camera.applyGravity = true;
+    //camera.applyGravity = true;
 	
     return camera;
 }
@@ -175,9 +175,24 @@ function createFloor(scene,box_width,box_length_rate) {
 
 function createLight(scene) {
     //Create a directional light
-    var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(0.5, -1, 0.5), scene);
-    light.position = new BABYLON.Vector3(20, 40, -20);
-    light.intensity = 0.9;
+	var light = new Array(6);
+	var light_positionx,light_positiony,light_positionz;
+	var light_flag = 0;
+	light_positionx = -20;light_positiony = 21;light_positionz = -10;
+	for(var light_i = 0,light_buffer = 0;light_i < 3;light_i++,light_buffer += 2){
+				for(var light_j = 0;light_j < 2;light_j++){
+					if(light_flag%2 ==0 && light_flag!=0){
+							light_positionx += 20;
+							light_positionz = -10;
+						}	
+				light[light_buffer + light_j] = new BABYLON.PointLight("dir"+light_buffer + light_j, new BABYLON.Vector3(0, -10, 0), scene);
+				light[light_buffer + light_j].position = new BABYLON.Vector3(light_positionx, light_positiony, light_positionz);
+				light[light_buffer + light_j].intensity = 0.3;
+				light[light_buffer + light_j].specular = new BABYLON.Color3(0.4, 0.4, 0.4);
+				light_positionz += 25;
+				light_flag++;
+				}
+	}
 
     //create a second one to simulate light on dark sides
     var secondLight = new BABYLON.DirectionalLight("dir02", new BABYLON.Vector3(-0.5, -1, -0.5), scene);
@@ -193,7 +208,7 @@ function createSkyBox(scene,box_width,box_length_rate) {
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
     //The cube texture is used for skz boxes and set as reflection texture 
-    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("Assets/skybox/wall", scene);
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("Assets/skybox/skybox", scene);
     //reflection coordinates set to skybox mode
     skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
     skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
@@ -301,7 +316,35 @@ function createDoors(loader){
 	//後門
 	oneDoor("backDoor",loader,-29);
 }
-
+function createTube_light(loader){
+	var Tube_light_positionx,Tube_light_positiony,Tube_light_positionz;
+	var Tube_light = new Array(6);
+	var Tube_light_flag = 0;
+	Tube_light_positionx = -20;Tube_light_positiony = 23.50;Tube_light_positionz = -10;
+	for(var Tube_light_i = 0,Tube_light_buffer = 0;Tube_light_i < 3;Tube_light_i++,Tube_light_buffer += 2){
+				for(var Tube_light_j = 0;Tube_light_j < 2;Tube_light_j++){
+				Tube_light[Tube_light_j + Tube_light_buffer] = loader.addMeshTask("Tubelight", "", "Assets/OBJ/Tubelight/", "Tubelight.obj");
+				Tube_light[Tube_light_j + Tube_light_buffer].onSuccess = function (t) {
+				if(Tube_light_flag%2 ==0 && Tube_light_flag!=0){
+							Tube_light_positionx += 20;
+							Tube_light_positionz = -10;
+						}		
+				t.loadedMeshes.forEach(function (obj) {	
+				obj.scaling.x = 0.009;
+				obj.scaling.y = 0.010;
+				obj.scaling.z = 0.015;
+				obj.position.x += Tube_light_positionx;
+				obj.position.z -= Tube_light_positionz;
+				obj.position.y += Tube_light_positiony;
+				obj.rotation.x = Math.PI;
+				obj.rotation.y = Math.PI/2;
+			});
+			Tube_light_positionz += 25;
+			Tube_light_flag++;
+			};
+		}
+	}
+}
 function oneDoor(name,loader,z){
 
 	var door = loader.addMeshTask(name, "", "Assets/OBJ/door/", "door.obj");
