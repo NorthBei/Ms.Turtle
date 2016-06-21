@@ -113,6 +113,8 @@ function createScene(engine) {
 	createSpeaker(loader);
 	createClock(loader);
 	createComputer(loader);
+	//createMicrophone(loader);
+	createCellphone(loader);
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
@@ -625,6 +627,47 @@ function createMouse(loader,x,y,z){
 			
 			//obj.rotation.y = Math.PI/2;
 			var scale = 5;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+//obj不能用
+function createMicrophone(loader){
+	var Microphone = loader.addMeshTask("Microphone", "", "Assets/OBJ/microphone/", "Shure.obj");
+	Microphone.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = 0;
+			obj.position.y = 15;
+			obj.position.z = 0;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 1;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createCellphone(loader){
+	var Cellphone = loader.addMeshTask("Cellphone", "", "Assets/OBJ/cellphone/", "iphone5_OBJ.obj");
+	Cellphone.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = 0;
+			obj.position.y = 15;
+			obj.position.z = 10;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.005;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
