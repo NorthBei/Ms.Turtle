@@ -17,6 +17,24 @@
             height: 100%;
             touch-action: none;
         }
+		#stuffName {
+			font-family: 微軟正黑體;
+			font-size: 3em;
+			position: absolute;
+			width: 600px;
+			height: 200px;
+			top: 30%;
+			left: 50%;
+			margin: 0 0 0 -300px;
+			text-align:center;
+			z-index: 0;
+		}
+		.buttonGuide {
+			position: absolute;
+			horizontal-align: middle;
+			bottom: 0px;
+			z-index: 0;
+		}
     </style>
 	<script src="scripts/hand.minified-1.2.js"></script>
 	<script src="scripts/poly2tri.js"></script>
@@ -34,5 +52,7 @@
         init();
 
     </script>
+	<div id="stuffName"></div>
+	<img src="Assets/buttonGuide.png" class="buttonGuide"/>
 </body>
 </html>

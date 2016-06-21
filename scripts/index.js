@@ -150,6 +150,10 @@ function createFreeCamera(scene,height) {
     return camera;
 }
 
+function addTextDescription(text) {
+	document.getElementById("stuffName").innerHTML = text;
+}
+
 /**********裝潢區**********/
 function createFloor(scene,box_width,box_length_rate) {
     //Create a ground mesh
