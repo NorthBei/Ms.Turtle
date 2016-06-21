@@ -945,7 +945,7 @@ vt -1.3533 0.4459 0.0000
 vt -1.3533 0.0932 0.0000
 # 628 texture coords
 
-g Layer0_001
+g Chair
 usemtl wire_224198087
 s off
 f 1/1/1 2/2/1 3/3/1 4/4/1 
