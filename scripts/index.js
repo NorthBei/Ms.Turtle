@@ -150,7 +150,7 @@ function createFreeCamera(scene,height) {
 
     var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, height, 0), scene);
 
-    camera.speed = 0.8;
+    camera.speed = 0.5;
     camera.inertia = 0.4;
 	//Set the ellipsoid around the camera (e.g. your player's size)
     camera.ellipsoid = new BABYLON.Vector3(0.5, height/2, 0.5);
@@ -173,18 +173,40 @@ function createSceneSound(scene) {
 }
 
 function createWalkSound(scene) {
-	var WalkSound = new BABYLON.Sound("WalkSound", "Assets/sounds/WalkSound.wav", scene, function () {
-			
+	var WalkSound = new BABYLON.Sound("WalkSound", "Assets/sounds/walking_on_a_floor.mp3", scene, function () {
+			var i = 0;
 			window.addEventListener("keydown", function(e){
 				switch (event.keyCode) {
 					case 87:
-						WalkSound.play();
+						if(!WalkSound.isPlaying)
+							WalkSound.play();
+					break;
+					case 68:
+						if(!WalkSound.isPlaying)
+							WalkSound.play();
+					break;
+					case 65:
+						if(!WalkSound.isPlaying)
+							WalkSound.play();
+					break;
+					case 83:
+						if(!WalkSound.isPlaying)
+							WalkSound.play();
 					break;
 				}	
 			}, false);
 			window.addEventListener("keyup", function(e){
 				switch (event.keyCode) {
 					case 87:
+						WalkSound.stop();
+					break;
+					case 68:
+						WalkSound.stop();
+					break;
+					case 65:
+						WalkSound.stop();
+					break;
+					case 83:
 						WalkSound.stop();
 					break;
 				}
@@ -231,16 +253,15 @@ function createLight(scene) {
 						}	
 				light[light_buffer + light_j] = new BABYLON.PointLight("dir"+light_buffer + light_j, new BABYLON.Vector3(0, -10, 0), scene);
 				light[light_buffer + light_j].position = new BABYLON.Vector3(light_positionx, light_positiony, light_positionz);
-				light[light_buffer + light_j].intensity = 0.3;
-				light[light_buffer + light_j].specular = new BABYLON.Color3(0.4, 0.4, 0.4);
+				light[light_buffer + light_j].intensity = 0.2;
+				light[light_buffer + light_j].diffuse = new BABYLON.Color3(0.9, 0.7, 0.7);
+				light[light_buffer + light_j].specular = new BABYLON.Color3(0.3, 0.3, 0.3);
 				light_positionz += 25;
 				light_flag++;
 				}
 	}
 
     //create a second one to simulate light on dark sides
-    var secondLight = new BABYLON.DirectionalLight("dir02", new BABYLON.Vector3(-0.5, -1, -0.5), scene);
-    secondLight.intensity = 0.35;
 
     return light;
 }
@@ -492,6 +513,7 @@ function createTable(loader){
 					t.loadedMeshes.forEach(function (m) {
 						m.position.x -= table_positionx;
 						m.position.z += table_positionz;
+						m.scaling.y = 1.5;
 						m.checkCollisions = true; //加入碰撞，不可穿越
 					});
 					table_positionx +=8;
@@ -526,7 +548,7 @@ function createChair(loader){
 						
 						var scale = 0.11;
 						obj.scaling.x = scale*0.95;
-						obj.scaling.y = scale;
+						obj.scaling.y = scale*1.2;
 						obj.scaling.z = scale;
 						obj.checkCollisions = true; //加入碰撞，不可穿越
 					});
@@ -888,9 +910,9 @@ function createHammer(loader){
 	
 		t.loadedMeshes.forEach(function (obj) {
 
-			obj.position.x = 0;
+			obj.position.x = 15;
 			obj.position.y = 10;
-			obj.position.z = 0;
+			obj.position.z = 15;
 			obj.scaling.x = 2;
 			obj.scaling.y = 2;
 			obj.scaling.z = 2;
