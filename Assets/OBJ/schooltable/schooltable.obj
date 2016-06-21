@@ -1,7 +1,7 @@
 # Blender v2.70 (sub 0) OBJ File: 'cadeira.blend'
 # www.blender.org
 mtllib school chair.mtl
-o Cube.001
+o SchoolTable
 v 1.795624 2.624773 2.222215
 v 1.844825 2.624773 2.173015
 v 1.844824 2.624772 2.103435
