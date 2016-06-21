@@ -120,12 +120,14 @@ function createScene(engine) {
 	createCellphone(loader, scene);
 	createMotherboard(loader);
 	createBook(loader);
+	createPlayBoy(loader, scene);
 	createBattery(loader);
 	createRemote(loader, scene);
 	createIC(loader);
 	createHammer(loader);
 	createFireExtinguisher(loader);
 	createRubbish(loader);
+	createRat(loader);
 	showAxis(scene,2);
 	
     loader.onFinish = function () {
@@ -799,17 +801,39 @@ function createMotherboard(loader){
 }
 
 function createBook(loader){
-	var Book = loader.addMeshTask("Book", "", "Assets/OBJ/Book/", "Book.obj");
+	var Book = loader.addMeshTask("Book", "", "Assets/OBJ/Book/", "book.obj");
 	
 	Book.onSuccess = function (t) {
 	
 		t.loadedMeshes.forEach(function (obj) {
 			obj.position.x = 24;
-			obj.position.y = 2;
-			obj.position.z = 18;
+			obj.position.y = 4;
+			obj.position.z = 22;
 			
 			//obj.rotation.y = Math.PI/2;
-			var scale = 0.01;
+			var scale = 0.5;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createPlayBoy(loader, scene){
+	var PlayBoy = loader.addMeshTask("PlayBoy", "", "Assets/OBJ/playboy/", "book.obj");
+	var materialPlayBoy = new BABYLON.StandardMaterial("materialPlayBoy", scene);
+	materialPlayBoy.diffuseTexture = new BABYLON.Texture("Assets/OBJ/playboy/playboy.png", scene);
+	PlayBoy.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+			obj.material = materialPlayBoy;
+			obj.position.x = -0.2;
+			obj.position.y = 3;
+			obj.position.z = 27.2;
+			
+			//obj.rotation.y = Math.PI/2;
+			var scale = 0.7;
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
@@ -934,6 +958,27 @@ function createRubbish(loader){
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
 			//obj.checkCollisions = true; //加入碰撞，不可穿越
+		});
+	};
+}
+
+function createRat(loader){
+
+	var Rat = loader.addMeshTask("Rat", "", "Assets/OBJ/Rat/", "RE O zombi Rat.obj");
+	Rat.onSuccess = function (t) {
+	
+		t.loadedMeshes.forEach(function (obj) {
+
+			obj.position.x = 0;
+			obj.position.y = 0;
+			obj.position.z = 0;
+			
+			//obj.rotation.z = Math.PI/2;
+			var scale = 0.5;
+			obj.scaling.x = scale;
+			obj.scaling.y = scale;
+			obj.scaling.z = scale;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
