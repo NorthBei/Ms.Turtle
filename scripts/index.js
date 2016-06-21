@@ -171,7 +171,7 @@ function createFreeCamera(scene,height) {
 	
 	//Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
-    //camera.applyGravity = true;
+    camera.applyGravity = true;
 	
     return camera;
 }
@@ -341,6 +341,7 @@ function createBeam(name,scene,x,z){
 	box.position.x = x;
 	box.position.z = z;
 	box.scaling.y = 26;
+	box.checkCollisions = true; //加入碰撞，不可穿越
 }
 function createceiling(scene,size,x,y,z,scaleX,scaleY){
 	var wall = BABYLON.Mesh.CreateBox("wall", size, scene);
@@ -353,6 +354,7 @@ function createceiling(scene,size,x,y,z,scaleX,scaleY){
 	wall.position.z = z;
 	wall.scaling.y = scaleY;
 	wall.scaling.x = scaleX;
+	wall.checkCollisions = true; //加入碰撞，不可穿越
 }
 function createHorizontalWall_front(scene,size,x,y,z,scaleX,scaleZ){
 	var wall = BABYLON.Mesh.CreateBox("wall", size, scene);
@@ -365,6 +367,7 @@ function createHorizontalWall_front(scene,size,x,y,z,scaleX,scaleZ){
 	wall.position.z = z;
 	wall.scaling.x = scaleX;
 	wall.scaling.z = scaleZ;
+	wall.checkCollisions = true; //加入碰撞，不可穿越
 }
 function createHorizontalWall(scene,size,x,y,z,scaleY,scaleZ){
 	var wall = BABYLON.Mesh.CreateBox("wall", size, scene);
@@ -377,6 +380,7 @@ function createHorizontalWall(scene,size,x,y,z,scaleY,scaleZ){
 	wall.position.z = z;
 	wall.scaling.y = scaleY;
 	wall.scaling.z = scaleZ;
+	wall.checkCollisions = true; //加入碰撞，不可穿越
 }
 
 function createDoors(loader){
@@ -407,6 +411,7 @@ function createTube_light(loader){
 				obj.position.y += Tube_light_positiony;
 				obj.rotation.x = Math.PI;
 				obj.rotation.y = Math.PI/2;
+				obj.checkCollisions = true; //加入碰撞，不可穿越
 			});
 			Tube_light_positionz += 25;
 			Tube_light_flag++;
@@ -428,6 +433,7 @@ function oneDoor(name,loader,z){
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
@@ -584,6 +590,7 @@ function oneWindow(loader,x,y,z,minRate){
 			obj.scaling.x = scale;
 			obj.scaling.y = scale*minRate;
 			obj.scaling.z = scale;
+			obj.checkCollisions = true; //加入碰撞，不可穿越
 		});
 	};
 }
@@ -883,7 +890,6 @@ function createHammer(loader){
 			obj.scaling.y = 2;
 			obj.scaling.z = 2;
 			obj.checkCollisions = true; //加入碰撞，不可穿越
-			obj.parent = null;
 		});
 	};
 }
