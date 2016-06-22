@@ -10,6 +10,8 @@ function sendRecord(){
 		var record = document.getElementById("record");
 		record.style.display = "block";
 		
+		var timeTemp = document.getElementById("timeTemp");
+		console.log(timeTemp.value);
 		var name  = document.getElementById("name").value;
 		var xhttp = new XMLHttpRequest();
 		xhttp.overrideMimeType('json');
@@ -23,6 +25,6 @@ function sendRecord(){
 				document.getElementById("record_content").innerHTML = html;
 			}
 		};
-		xhttp.open("GET", "http://140.121.196.20:7779/MSTT/RecordWinner?name="+name+"&second=1", true);
+		xhttp.open("GET", "http://140.121.196.20:7779/MSTT/RecordWinner?name="+name+"&second="+timeTemp.textContent, true);
 		xhttp.send();
 }

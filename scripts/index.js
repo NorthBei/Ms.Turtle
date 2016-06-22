@@ -257,8 +257,11 @@ function startCountingDown() {
 
 function getTime()
 {
-	var a = clone(timer);
-	return a;
+	var time = clone(timer);
+	document.getElementById("timeTemp").textContent = time;
+	
+	var success = document.getElementById("success");
+	success.style.display = "block";
 }
 
 /**********裝潢區**********/
