@@ -57,7 +57,7 @@ function clickLeft(evt, pickInfo, camera, scene) {
 		{
 			console.log('s obj position: ' + pickedObj.position);
 			pickedObj.parent = camera;
-			pickedObj.position = new BABYLON.Vector3(2, -2, 5);
+			pickedObj.position = new BABYLON.Vector3(2, -2, 3);
 			
 			console.log('camera position: ' + camera.position);
 			console.log('obj position: ' + pickedObj.position);
@@ -326,9 +326,6 @@ function Objdetail(name)
 			break;
 		case 'PlayBoy':
 			addTextDescription(' [Play Boy] <br> 嘿嘿嘿 <br> 嘿嘿嘿嘿嘿嘿嘿');
-			break;
-		case 'Rat':
-			addTextDescription(' [ 大鼠加大] <br> 好大的老鼠RRR');
 			break;
 	}
 }
