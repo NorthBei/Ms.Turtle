@@ -254,6 +254,7 @@ function act(takeObject, pickedObject, scene)
 				addTextDescription('太神啦');
 				createBreakGlassSound(scene);
 				pickedObject.dispose();
+				getTime();
 			}
 			break;
 	}

@@ -27,7 +27,7 @@ function init() {
     camera.attachControl(engine.getRenderingCanvas());
     //set the camera to be the main active camera;
     scene.activeCamera = camera;
-	animateRat(scene);
+	
 	//讓滑鼠可以直接滑動控制視角
 	initPointerLock(scene,camera);
 	initPlayerAction(scene,camera);
