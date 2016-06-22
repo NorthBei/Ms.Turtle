@@ -16,11 +16,11 @@ function sendRecord(){
 		var success = document.getElementById("success");
 		success.style.display = "none";
 		
-		var record = document.getElementById("record");
-		record.style.display = "block";
 		
-		var timeTemp = document.getElementById("timeTemp");
+		
+		/*var timeTemp = document.getElementById("timeTemp");
 		console.log(timeTemp.value);
+		console.log(timer);*/
 		var name  = document.getElementById("name").value;
 		var xhttp = new XMLHttpRequest();
 		xhttp.overrideMimeType('json');
@@ -32,9 +32,12 @@ function sendRecord(){
 					html+="<p><b>第"+(i+1)+"名<b>     姓名:"+record[i].name+"    破關秒數:"+record[i].second+"    時間:"+record[i].time+"</p>";
 				}
 				document.getElementById("record_content").innerHTML = html;
+				
+				var record = document.getElementById("record");
+				record.style.display = "block";
 			}
 		};
-		xhttp.open("GET", "http://140.121.196.20:7779/MSTT/RecordWinner?name="+name+"&second="+timeTemp.textContent, true);
+		xhttp.open("GET", "http://140.121.196.20:7779/MSTT/RecordWinner?name="+name+"&second="+timer, true);
 		xhttp.send();
 }
 

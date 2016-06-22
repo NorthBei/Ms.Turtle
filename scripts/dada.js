@@ -57,7 +57,7 @@ function clickLeft(evt, pickInfo, camera, scene) {
 		{
 			console.log('s obj position: ' + pickedObj.position);
 			pickedObj.parent = camera;
-			pickedObj.position = new BABYLON.Vector3(2, -2, 3);
+			pickedObj.position = new BABYLON.Vector3(2, -2, 5);
 			
 			console.log('camera position: ' + camera.position);
 			console.log('obj position: ' + pickedObj.position);
@@ -289,7 +289,7 @@ function Objdetail(name)
 			addTextDescription('[滑鼠]<br>古老的滾球滑鼠<br>真是令人懷念的古董啊!');
 			break;
 		case 'IC':
-			addTextDescription('[80863]<br>不知道從哪裡掉出來的IC<br>長得好像蟑螂啊......');
+			addTextDescription('[80386]<br>不知道從哪裡掉出來的IC<br>長得好像蟑螂啊......');
 			break;
 		case 'MotherBoard':
 			addTextDescription('[缺漏的電路板]<br>一整塊電路板<br>看起來好像有個缺口!');
@@ -310,7 +310,7 @@ function Objdetail(name)
 			addTextDescription(' [有電的遙控器] <br> 裝上電池的遙控器 <br> 大概可以開啟什麼吧? ');
 			break;
 		case 'MotherBoardWithIC':
-			addTextDescription(' [完整的電路板] <br> 裝上80863的電路板 <br> 但是可以拿來幹嘛呢... ');
+			addTextDescription(' [完整的電路板] <br> 裝上80386的電路板 <br> 但是可以拿來幹嘛呢... ');
 			break;
 		case 'SpeakerWithMotherBoard':
 			addTextDescription(' [喇叭] <br> 好像需要什麼來啟動他');
@@ -324,8 +324,8 @@ function Objdetail(name)
 		case 'PlayBoy':
 			addTextDescription(' [Play Boy] <br> 嘿嘿嘿 <br> 嘿嘿嘿嘿嘿嘿嘿');
 			break;
-		case 'PlayBoy':
-			addTextDescription(' [Play Boy] <br> 嘿嘿嘿 <br> 嘿嘿嘿嘿嘿嘿嘿');
+		case 'Rat':
+			addTextDescription(' [大鼠加大] <br> 好大的老鼠RRR');
 			break;
 	}
 }

@@ -1,7 +1,7 @@
 # Blender v2.69 (sub 0) OBJ File: 'Battery.blend'
 # www.blender.org
 mtllib Battery.mtl
-o Battery_Cylinder.003
+mg Battery_Cylinder.003
 v 0.041363 2.367005 -0.419962
 v 0.031044 2.367005 -0.420851
 v 0.020706 2.367006 -0.421487

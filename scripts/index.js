@@ -12,6 +12,7 @@
  * 
  */
  var timer = 300; //遊戲倒數時間
+ var countDownControler;
  
 function init() {
     //Init the engine
@@ -253,13 +254,14 @@ function addTextDescription(text) {
 }
 
 function startCountingDown() {
-	setInterval(function() {document.getElementById('timer').innerHTML = 'Time: ' + timer--; if (timer < 0) document.body.innerHTML="<img src='Assets/explodeBear.jpg' style='position: absolute; top: 50px; left: 50%; margin: 0 0 0 -325px;'/><div style='font-size:13em; position: absolute; top: 400px; left: 50%; margin: 0 0 0 -325px;'>LOSER</div>"}, 1000);
+	countDownControler = setInterval(function() {document.getElementById('timer').innerHTML = 'Time: ' + timer--; if (timer < 0) document.body.innerHTML="<img src='Assets/explodeBear.jpg' style='position: absolute; top: 50px; left: 50%; margin: 0 0 0 -325px;'/><div style='font-size:13em; position: absolute; top: 400px; left: 50%; margin: 0 0 0 -325px;'>LOSER</div>"}, 1000);
 }
 
 function getTime()
 {
-	var time = clone(timer);
-	document.getElementById("timeTemp").textContent = time;
+	//var time = clone(timer);
+	clearInterval(countDownControler);
+	//document.getElementById("timeTemp").textContent = time;
 	
 	var success = document.getElementById("success");
 	success.style.display = "block";
@@ -1228,7 +1230,7 @@ function  initPointerLock(scene,camera) {
 	document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
 }
 
-function clone(obj) {
+/*function clone(obj) {
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
 
@@ -1258,4 +1260,4 @@ function clone(obj) {
     }
 
     throw new Error("Unable to copy obj! Its type isn't supported.");
-}
+}*/
