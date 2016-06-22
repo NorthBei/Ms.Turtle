@@ -27,7 +27,7 @@ function init() {
     camera.attachControl(engine.getRenderingCanvas());
     //set the camera to be the main active camera;
     scene.activeCamera = camera;
-	
+	animateRat(scene);
 	//讓滑鼠可以直接滑動控制視角
 	initPointerLock(scene,camera);
 	initPlayerAction(scene,camera);
@@ -131,6 +131,7 @@ function createScene(engine) {
 	createFireExtinguisher(loader);
 	createRubbish(loader);
 	createRat(loader);
+	//animateRat(scene);
 	
     loader.onFinish = function () {
         engine.runRenderLoop(function () {
@@ -1084,14 +1085,46 @@ function createRat(loader){
 			obj.scaling.x = scale;
 			obj.scaling.y = scale;
 			obj.scaling.z = scale;
-<<<<<<< HEAD
-			//obj.checkCollisions = true; //加入碰撞，不可穿越
-=======
+
 			obj.checkCollisions = true; //加入碰撞，不可穿越
 			obj.name = 'Rat';
->>>>>>> origin/gh-pages
+			obj.id = 'Rat';
 		});
 	};
+}
+
+function animateRat(scene){
+	
+	var rat = scene.getMeshByID('Rat');
+	var moveBox =  new BABYLON.Animation(
+			"moveBox",
+			"position",
+			60,
+			BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+			BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+	var start = rat.position;
+	var mid = new BABYLON.Vector3(rat.position.x + 1 ,rat.position.y , rat.position.z + 2);
+	var end = rat.position;
+
+	var keys = [];
+	keys.push({
+		frame: 0,
+		value: start
+	});
+		
+	keys.push({
+		frame: 10,
+		value: mid
+	});
+
+	keys.push({
+		frame: 20,
+		value: end
+	});
+
+	moveBox.setKeys(keys);
+	rat.animations.push(moveBox);
+	scene.beginAnimation(rat,0,100,true);
 }
 
 /**********功能區**********/ 
